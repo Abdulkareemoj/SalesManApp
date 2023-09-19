@@ -1,50 +1,38 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./styles/App.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs"
-import { CalendarDateRangePicker } from "@/components/date-range-picker"
-import { MainNav } from "@/components/main-nav"
-import { Overview } from "@/components/overview"
-import { RecentSales } from "@/components/recent-sales"
-import { Search } from "@/components/search"
-import TeamSwitcher from "@/components/team-switcher"
-import { UserNav } from "@/components/user-nav"
-
-
-
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CalendarDateRangePicker } from "@/components/date-range-picker";
+import { MainNav } from "@/components/main-nav";
+import { Overview } from "@/components/overview";
+import { RecentSales } from "@/components/recent-sales";
+import { Search } from "@/components/search";
+import TeamSwitcher from "@/components/team-switcher";
+import { UserNav } from "@/components/user-nav";
 
 export default function DashboardPage() {
   return (
     <>
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      {children}
-    </ThemeProvider>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        {children}
+      </ThemeProvider>
 
-   
       <div className="md:hidden">
-        <Image
+        <img
           src="/examples/dashboard-light.png"
           width={1280}
           height={866}
           alt="Dashboard"
           className="block dark:hidden"
         />
-        <Image
+        <img
           src="/examples/dashboard-dark.png"
           width={1280}
           height={866}
@@ -214,9 +202,5 @@ export default function DashboardPage() {
         </div>
       </div>
     </>
-  )
-}
   );
 }
-
-export default App;
