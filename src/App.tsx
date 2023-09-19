@@ -20,26 +20,26 @@ import { UserNav } from "@/components/user-nav";
 export default function DashboardPage() {
   return (
     <>
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      {/* <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         {children}
-      </ThemeProvider>
+      </ThemeProvider> */}
 
-      <div className="md:hidden">
+      {/* <div className="md:hidden">
         <img
-          src="/examples/dashboard-light.png"
+          src="dashboard-light.png"
           width={1280}
           height={866}
           alt="Dashboard"
           className="block dark:hidden"
         />
         <img
-          src="/examples/dashboard-dark.png"
+          src="dashboard-dark.png"
           width={1280}
           height={866}
           alt="Dashboard"
           className="hidden dark:block"
         />
-      </div>
+      </div> */}
       <div className="hidden flex-col md:flex">
         <div className="border-b">
           <div className="flex h-16 items-center px-4">
