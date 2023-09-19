@@ -9,30 +9,20 @@ export function MainNav({
       className={cn("flex items-center space-x-4 lg:space-x-6", className)}
       {...props}
     >
-      <Link
-        href="/examples/dashboard"
-        className="text-sm font-medium transition-colors hover:text-primary"
-      >
-        Overview
-      </Link>
-      <Link
-        href="/examples/dashboard"
-        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-      >
-        Customers
-      </Link>
-      <Link
-        href="/examples/dashboard"
-        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-      >
-        Products
-      </Link>
-      <Link
-        href="/examples/dashboard"
-        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-      >
-        Settings
-      </Link>
+      <ul>
+        <li className="text-sm font-medium transition-colors hover:text-primary">
+          <a href="#">Overview</a>
+        </li>
+        <li className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+          <a href="#">Customers</a>
+        </li>
+        <li className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+          <a href="#">Products</a>
+        </li>
+        <li className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+          <a href="#">Settings</a>
+        </li>
+      </ul>
     </nav>
   );
 }
