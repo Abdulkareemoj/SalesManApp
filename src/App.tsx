@@ -3,8 +3,6 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./styles/App.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import Image from "next/image"
-
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -19,13 +17,13 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
-import { CalendarDateRangePicker } from "@/app/examples/dashboard/components/date-range-picker"
-import { MainNav } from "@/app/examples/dashboard/components/main-nav"
-import { Overview } from "@/app/examples/dashboard/components/overview"
-import { RecentSales } from "@/app/examples/dashboard/components/recent-sales"
-import { Search } from "@/app/examples/dashboard/components/search"
-import TeamSwitcher from "@/app/examples/dashboard/components/team-switcher"
-import { UserNav } from "@/app/examples/dashboard/components/user-nav"
+import { CalendarDateRangePicker } from "@/components/date-range-picker"
+import { MainNav } from "@/components/main-nav"
+import { Overview } from "@/components/overview"
+import { RecentSales } from "@/components/recent-sales"
+import { Search } from "@/components/search"
+import TeamSwitcher from "@/components/team-switcher"
+import { UserNav } from "@/components/user-nav"
 
 
 
