@@ -2,10 +2,32 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { UserAuthForm } from "@/components/auth-form";
 
+import { useState } from "react";
+import { supabase } from "./config/supabaseClient";
+import { AuthError } from "@supabase/supabase-js";
+
 export default function AuthenticationPage() {
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithOtp({ email });
+
+    if (error) {
+      const authError = error as AuthError;
+      alert(authError.message);
+    } else {
+      alert("Check your email for the login link!");
+    }
+    setLoading(false);
+  };
+
   return (
     <>
-      <div className="md:hidden">
+      {/* <div className="md:hidden">
         <img
           src="/examples/authentication-light.png"
           width={1280}
@@ -20,9 +42,9 @@ export default function AuthenticationPage() {
           alt="Authentication"
           className="hidden dark:block"
         />
-      </div>
+      </div> */}
       <div className="container relative hidden h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-        <Link
+        {/* <a
           href="/examples/authentication"
           className={cn(
             buttonVariants({ variant: "ghost" }),
@@ -30,7 +52,7 @@ export default function AuthenticationPage() {
           )}
         >
           Login
-        </Link>
+        </a> */}
         <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
           <div className="absolute inset-0 bg-zinc-900" />
           <div className="relative z-20 flex items-center text-lg font-medium">
@@ -72,22 +94,47 @@ export default function AuthenticationPage() {
             <UserAuthForm />
             <p className="px-8 text-center text-sm text-muted-foreground">
               By clicking continue, you agree to our{" "}
-              <Link
+              <a
                 href="/terms"
                 className="underline underline-offset-4 hover:text-primary"
               >
                 Terms of Service
-              </Link>{" "}
+              </a>{" "}
               and{" "}
-              <Link
+              <a
                 href="/privacy"
                 className="underline underline-offset-4 hover:text-primary"
               >
                 Privacy Policy
-              </Link>
+              </a>
               .
             </p>
           </div>
+        </div>
+      </div>
+      <div className="row flex flex-center">
+        <div className="col-6 form-widget">
+          <h1 className="header">Supabase + React</h1>
+          <p className="description">
+            Sign in via magic link with your email below
+          </p>
+          <form className="form-widget" onSubmit={handleLogin}>
+            <div>
+              <input
+                className="inputField"
+                type="email"
+                placeholder="Your email"
+                value={email}
+                required={true}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div>
+              <button className={"button block"} disabled={loading}>
+                {loading ? <span>Loading</span> : <span>Send magic link</span>}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </>
