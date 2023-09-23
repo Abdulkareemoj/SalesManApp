@@ -35,27 +35,27 @@ export default function DashboardPage() {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <>
         {" "}
-        {/* {children} */}
-        {/* <div className="md:hidden">
-        <img
-          src="dashboard-light.png"
-          width={1280}
-          height={866}
-          alt="Dashboard"
-          className="block dark:hidden"
-        />
-        <img
-          src="dashboard-dark.png"
-          width={1280}
-          height={866}
-          alt="Dashboard"
-          className="hidden dark:block"
-        />
-      </div> */}
+        {/* {children}  */}
+        <div className="md:hidden">
+          <img
+            src="dashboard-light.png"
+            width={1280}
+            height={866}
+            alt="Dashboard"
+            className="block dark:hidden"
+          />
+          <img
+            src="dashboard-dark.png"
+            width={1280}
+            height={866}
+            alt="Dashboard"
+            className="hidden dark:block"
+          />
+        </div>
         <div className="hidden flex-col md:flex">
           <div className="border-b">
             <div className="flex h-16 items-center px-4">
-              {/* <TeamSwitcher /> */}
+              {/* <TeamSwitcher />  */}
               <MainNav
               // className="mx-6"
               />
