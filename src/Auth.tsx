@@ -5,54 +5,56 @@ import { UserAuthForm } from "@/components/auth-form";
 import { useState } from "react";
 import { supabase } from "./config/supabaseClient";
 import { AuthError } from "@supabase/supabase-js";
+import { useAuth, } from "./components/authContext";
 
 export default function AuthenticationPage() {
+  const { signIn, user, session } = useAuth();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
-
+  const [password, setPassword] = useState("");
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    await signIn(email, password);
     setLoading(true);
-    const { error } = await supabase.auth.signInWithOtp({ email });
+    //   const { error } = await supabase.auth.signInWithOtp({ email });
 
-    if (error) {
-      const authError = error as AuthError;
-      alert(authError.message);
-    } else {
-      alert("Check your email for the login link!");
-    }
-    setLoading(false);
+    //   if (error) {
+    //     const authError = error as AuthError;
+    //     alert(authError.message);
+    //   } else {
+    //     alert("Check your email for the login link!");
+    //   }
+    //   setLoading(false);
   };
 
   return (
     <>
-      {/* <div className="md:hidden">
+      <div className="md:hidden">
         <img
-          src="/examples/authentication-light.png"
+          src="authentication-light.png"
           width={1280}
           height={843}
           alt="Authentication"
           className="block dark:hidden"
         />
         <img
-          src="/examples/authentication-dark.png"
+          src="authentication-dark.png"
           width={1280}
           height={843}
           alt="Authentication"
           className="hidden dark:block"
         />
-      </div> */}
+      </div>
       <div className="container relative hidden h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-        {/* <a
-          href="/examples/authentication"
+        <a
+          href="/login"
           className={cn(
             buttonVariants({ variant: "ghost" }),
             "absolute right-4 top-4 md:right-8 md:top-8"
           )}
         >
           Login
-        </a> */}
+        </a>
         <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
           <div className="absolute inset-0 bg-zinc-900" />
           <div className="relative z-20 flex items-center text-lg font-medium">
@@ -92,6 +94,10 @@ export default function AuthenticationPage() {
               </p>
             </div>
             <UserAuthForm />
+            <div>
+              <h1>Welcome, {user?.email}!</h1>
+              <p>Your session token is: {session?.access_token}</p>
+            </div>
             <p className="px-8 text-center text-sm text-muted-foreground">
               By clicking continue, you agree to our{" "}
               <a
@@ -127,6 +133,15 @@ export default function AuthenticationPage() {
                 value={email}
                 required={true}
                 onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div>
+              <input
+                className="inputField"
+                type="password"
+                value={password}
+                required={true}
+                onChange={(event) => setPassword(event.target.value)}
               />
             </div>
             <div>
