@@ -1,60 +1,94 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { AuthSession, Subscription } from "@supabase/supabase-js";
+import { AuthSession } from "@supabase/supabase-js";
 import { supabase } from "../config/supabaseClient";
 
 type AuthContextType = {
-  session: AuthSession | null;
-  isAuthenticated: boolean;
+  // session: AuthSession | null;
+  // isAuthenticated: boolean;
+  user: any;
+  session: any;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
 };
 
-const AuthContext = createContext<AuthContextType>({
+// const AuthContext = createContext<AuthContextType>({
+//   session: null,
+//   isAuthenticated: false,
+//   signIn: async (_email: string, _password: string) => {},
+//   signOut: async () => {},
+// });
+
+// export function useAuth() {
+//   return useContext(AuthContext);
+// }
+
+// type AuthProviderProps = {
+//   children: React.ReactNode;
+// };
+
+// export function AuthProvider({ children }: AuthProviderProps) {
+  // const [session, setSession] = useState<AuthSession | null>(null);
+  
+export const AuthContext = createContext<AuthContextType>({
+  user: null,
   session: null,
-  isAuthenticated: false,
-  signIn: async (_email: string, _password: string) => {},
+  signIn: async (email: string, password: string) => {},
   signOut: async () => {},
 });
 
-export function useAuth() {
-  return useContext(AuthContext);
-}
-
-type AuthProviderProps = {
-  children: React.ReactNode;
-};
-
-export function AuthProvider({ children }: AuthProviderProps) {
-  const [session, setSession] = useState<AuthSession | null>(null);
-
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [user, setUser] = useState<any>(null);
+  const [session, setSession] = useState<any>(null);
+  // useEffect(() => {
+  //   const { data: session } = supabase.auth.session();
+  //   setSession(session);
+  //   const authListener = supabase.auth.onAuthStateChange((event, session) => {
+  //     if (event === "SIGNED_IN") {
+  //       setSession(session);
+  //     } else if (event === "SIGNED_OUT") {
+  //       setSession(null);
+  //     }
+  //   });
   useEffect(() => {
-    const { data: session } = supabase.auth.session();
+    const session = supabase.auth.session();
     setSession(session);
-    const authListener = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN") {
+    setUser(session?.user ?? null);
+
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
         setSession(session);
-      } else if (event === "SIGNED_OUT") {
-        setSession(null);
+        setUser(session?.user ?? null);
       }
-    });
+    );
     return () => {
-      authListener.subscription?.unsubscribe();
+      authListener?.unsubscribe();
     };
   }, []);
 
-  const isAuthenticated = session !== null;
+  // const isAuthenticated = session !== null;
+
+  // const signIn = async (email: string, password: string) => {
+  //   await supabase.auth.signIn({ email, password });
+  // };
 
   const signIn = async (email: string, password: string) => {
-    await supabase.auth.signIn({ email, password });
-  };
+    const { error } = await supabase.auth.signIn({
+      email,
+      password,
+    });
 
+    if (error) {
+      throw error;
+    }
+  };
   const signOut = async () => {
     await supabase.auth.signOut();
   };
 
   const authContextValue = {
     session,
-    isAuthenticated,
+    user,
+    // isAuthenticated,
     signIn,
     signOut,
   };
@@ -64,4 +98,4 @@ export function AuthProvider({ children }: AuthProviderProps) {
       {children}
     </AuthContext.Provider>
   );
-}
+};

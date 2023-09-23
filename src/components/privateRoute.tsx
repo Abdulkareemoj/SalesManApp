@@ -1,4 +1,4 @@
-import { Redirect, Route } from "react-router-dom";
+import { Navigate, Route } from "react-router-dom";
 import { useAuth } from "./authContext";
 
 export function PrivateRoute({ children, ...rest }: any) {
@@ -7,16 +7,11 @@ export function PrivateRoute({ children, ...rest }: any) {
   return (
     <Route
       {...rest}
-      render={({ location }) =>
+      element={
         isAuthenticated ? (
           children
         ) : (
-          <Redirect
-            to={{
-              pathname: "/login",
-              state: { from: location },
-            }}
-          />
+          <Navigate to="/login" state={{ from: rest.location }} replace />
         )
       }
     />
