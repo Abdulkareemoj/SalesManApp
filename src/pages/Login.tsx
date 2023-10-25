@@ -7,7 +7,8 @@ import { useAuth } from "../components/authProvider";
 import { Icons } from "@/components/icons";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useRef, useState } from "react";
+import { useState } from "react";
+import { supabase } from "@/config/supabaseClient";
 
 // interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -28,53 +29,68 @@ interface LoginProps {
 }
 
 const Login = ({ onSubmit }: LoginProps) => {
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   try {
-  //     setErrorMsg("");
+  const [isLoginLoading, setIsLoginLoading] = useState(false);
+  const [gmailLoading, setGmailLoading] = useState(false);
+  const [magicLoading, setMagicLoading] = useState(false);
 
-  //     if (!passwordRef.current?.value || !emailRef.current?.value) {
-  //       setErrorMsg("Please fill in the fields");
-  //       return;
-  //     }
-  //     const {
-  //       data: { user, session },
-  //       error,
-  //     } = await login(emailRef.current.value, passwordRef.current.value);
-  //     if (error) setErrorMsg(error.message);
-  //     if (user && session) navigate("/");
-  //   } catch (error) {
-  //     setErrorMsg("Email or Password Incorrect");
-  //   }
-  // };
+  const handleEmailLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setMagicLoading(true);
+    const { error } = await supabase.auth.signInWithOtp({ email });
+    if (error) {
+      alert(error.message);
+    } else alert("check your email for the login link");
+    //     if (user && session) navigate("/");
+    //   } catch (error) {
+    //     setErrorMsg("Email or Password Incorrect");
+    //   }
+    //   try {
+    //     setErrorMsg("");
 
+    //     if (!password.current?.value || !email.current?.value) {
+    //       setErrorMsg("Please fill in the fields");
+    //       return;
+    //     }
+    //     const {
+    //       data: { user, session },
+    //       error,
+    //     } = await login(email.current.value, password.current.value);
+    //
+  };
+
+  const handleGmailLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setGmailLoading(true);
+    if (error) {
+      alert(error.message);
+    } else alert("check your email for the login link");
+  };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true); // set isLoading to true when the form is submitted
+    setIsLoginLoading(true); // set isLoading to true when the form is submitted
     try {
       setErrorMsg("");
 
-      if (!passwordRef.current?.value || !emailRef.current?.value) {
+      if (!password.current?.value || !email.current?.value) {
         setErrorMsg("Please fill in the fields");
-        setIsLoading(false); // set isLoading to false if there is an error
+        setIsLoginLoading(false); // set isLoading to false if there is an error
         return;
       }
       const {
         data: { user, session },
         error,
-      } = await login(emailRef.current.value, passwordRef.current.value);
+      } = await login(email.current.value, password.current.value);
       if (error) setErrorMsg(error.message);
       if (user && session) navigate("/");
     } catch (error) {
       setErrorMsg("Email or Password Incorrect");
     }
-    setIsLoading(false); // set isLoading to false after the form submission is complete
+    setIsLoginLoading(false); // set isLoading to false after the form submission is complete
   };
   return (
     <>
@@ -138,7 +154,7 @@ const Login = ({ onSubmit }: LoginProps) => {
               <h1 className="text-2xl font-semibold tracking-tight">
                 Enter Your Details{" "}
               </h1>
-              <p className="text-sm text-muted-foreground">EBruh </p>
+              <p className="text-sm text-muted-foreground">ACME Company </p>
             </div>
             {/* /////////////////////////////////////////////////////////////////////////// */}
             <div className="grid gap-6">
@@ -155,8 +171,10 @@ const Login = ({ onSubmit }: LoginProps) => {
                       autoCapitalize="none"
                       autoComplete="email"
                       autoCorrect="off"
-                      ref={emailRef}
-                      disabled={isLoading}
+                      value={email}
+                      disabled={isLoginLoading}
+                      required={true}
+                      onChange={setEmail}
                     />
                   </div>
                   <div className="grid gap-1">
@@ -170,16 +188,21 @@ const Login = ({ onSubmit }: LoginProps) => {
                       autoCapitalize="none"
                       autoComplete="password"
                       autoCorrect="off"
-                      ref={passwordRef}
-                      disabled={isLoading}
+                      value={password}
+                      disabled={isLoginLoading}
+                      required={true}
+                      onChange={setPassword}
                     />
                   </div>
-                  <Button onClick={handleSubmit} disabled={isLoading}>
-                    {isLoading && (
+                  <Button onClick={handleSubmit} disabled={isLoginLoading}>
+                    {isLoginLoading && (
                       <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                     )}
-                    Sign In with Email
+                    Sign In
                   </Button>
+                  <span className="alert alert-danger" role="alert">
+                    {errorMsg}
+                  </span>
                 </div>
               </form>
               <div className="relative">
@@ -192,17 +215,54 @@ const Login = ({ onSubmit }: LoginProps) => {
                   </span>
                 </div>
               </div>
-              <Button variant="outline" type="button" disabled={isLoading}>
-                {isLoading ? (
+              <Button
+                onClick={handleGmailLogin}
+                variant="outline"
+                type="button"
+                disabled={gmailLoading}
+              >
+                {gmailLoading ? (
                   <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
-                  <Icons.gitHub className="mr-2 h-4 w-4" />
+                  <Icons.google className="mr-2 h-4 w-4" />
                 )}{" "}
-                Github
+                Google
               </Button>
               <span className="alert alert-danger" role="alert">
                 {errorMsg}
               </span>
+
+              <form onSubmit={handleEmailLogin}>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-background px-2  text-muted-foreground">
+                    Alternatively, Get a link to login
+                  </span>
+                </div>
+
+                <div className="grid gap-2 py-2">
+                  <Label className="sr-only" htmlFor="email">
+                    Email
+                  </Label>
+                  <Input
+                    id="email"
+                    placeholder="name@example.com"
+                    type="email"
+                    autoCapitalize="none"
+                    autoComplete="email"
+                    autoCorrect="off"
+                    value={email}
+                    disabled={magicLoading}
+                    required={true}
+                    onChange={setEmail}
+                  />{" "}
+                  <Button onClick={handleEmailLogin} disabled={magicLoading}>
+                    {magicLoading && (
+                      <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                    )}
+                    Send Magic Link
+                  </Button>
+                </div>
+              </form>
             </div>
             {/* ////////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
             <p className="px-8 text-center text-sm text-muted-foreground">
