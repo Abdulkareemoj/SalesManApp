@@ -45,22 +45,6 @@ const Login = ({ onSubmit }: LoginProps) => {
     if (error) {
       alert(error.message);
     } else alert("check your email for the login link");
-    //     if (user && session) navigate("/");
-    //   } catch (error) {
-    //     setErrorMsg("Email or Password Incorrect");
-    //   }
-    //   try {
-    //     setErrorMsg("");
-
-    //     if (!password.current?.value || !email.current?.value) {
-    //       setErrorMsg("Please fill in the fields");
-    //       return;
-    //     }
-    //     const {
-    //       data: { user, session },
-    //       error,
-    //     } = await login(email.current.value, password.current.value);
-    //
   };
 
   const handleGmailLogin = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -70,6 +54,7 @@ const Login = ({ onSubmit }: LoginProps) => {
       alert(error.message);
     } else alert("check your email for the login link");
   };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoginLoading(true); // set isLoading to true when the form is submitted
@@ -92,8 +77,10 @@ const Login = ({ onSubmit }: LoginProps) => {
     }
     setIsLoginLoading(false); // set isLoading to false after the form submission is complete
   };
+
   return (
     <>
+      {/*  */}
       <div className="md:hidden">
         <img
           src="authentication-light.png"
@@ -120,6 +107,9 @@ const Login = ({ onSubmit }: LoginProps) => {
         >
           Button
         </Button>
+        {/*  */}
+
+        {/*  */}
         <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
           <div className="absolute inset-0 bg-zinc-900" />
           <div className="relative z-20 flex items-center text-lg font-medium">
@@ -148,6 +138,9 @@ const Login = ({ onSubmit }: LoginProps) => {
             </blockquote>
           </div>
         </div>
+        {/*  */}
+
+        {/* Email Password */}
         <div className="lg:p-8">
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
@@ -156,7 +149,6 @@ const Login = ({ onSubmit }: LoginProps) => {
               </h1>
               <p className="text-sm text-muted-foreground">ACME Company </p>
             </div>
-            {/* /////////////////////////////////////////////////////////////////////////// */}
             <div className="grid gap-6">
               <form onSubmit={handleSubmit}>
                 <div className="grid gap-2">
@@ -205,6 +197,9 @@ const Login = ({ onSubmit }: LoginProps) => {
                   </span>
                 </div>
               </form>
+              {/* End */}
+
+              {/* Gmail Login  */}
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <span className="w-full border-t" />
@@ -228,9 +223,9 @@ const Login = ({ onSubmit }: LoginProps) => {
                 )}{" "}
                 Google
               </Button>
-              <span className="alert alert-danger" role="alert">
-                {errorMsg}
-              </span>
+              {/* End */}
+
+              {/* Magic Link */}
 
               <form onSubmit={handleEmailLogin}>
                 <div className="relative flex justify-center text-xs uppercase">
@@ -263,8 +258,8 @@ const Login = ({ onSubmit }: LoginProps) => {
                   </Button>
                 </div>
               </form>
+              {/* End */}
             </div>
-            {/* ////////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
             <p className="px-8 text-center text-sm text-muted-foreground">
               By clicking continue, you agree to our{" "}
               <a
