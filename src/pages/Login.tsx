@@ -24,12 +24,14 @@ import { supabase } from "@/config/supabaseClient";
 //     }, 3000);
 //   }
 
-interface LoginProps {
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-}
+// interface LoginProps {
+//   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+// }
 
-const Login = ({ onSubmit }: LoginProps) => {
+// const Login = ({ onSubmit }: LoginProps) => {
+export default function Login() {
   const [email, setEmail] = useState("");
+  const [magicEmail, setMagicEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
@@ -76,6 +78,27 @@ const Login = ({ onSubmit }: LoginProps) => {
       setErrorMsg("Email or Password Incorrect");
     }
     setIsLoginLoading(false); // set isLoading to false after the form submission is complete
+  };
+
+  const handleButtonClick = () => {
+    // call the handleSubmit function when the button is clicked
+    handleSubmit(
+      new Event("submit") as unknown as React.FormEvent<HTMLFormElement>
+    );
+  };
+
+  const handleGmailButtonClick = () => {
+    // call the handleSubmit function when the button is clicked
+    handleGmailLogin(
+      new Event("submit") as unknown as React.FormEvent<HTMLFormElement>
+    );
+  };
+
+  const handleMagicButtonClick = () => {
+    // call the handleSubmit function when the button is clicked
+    handleEmailLogin(
+      new Event("submit") as unknown as React.FormEvent<HTMLFormElement>
+    );
   };
 
   return (
@@ -166,7 +189,7 @@ const Login = ({ onSubmit }: LoginProps) => {
                       value={email}
                       disabled={isLoginLoading}
                       required={true}
-                      onChange={setEmail}
+                      onChange={(event) => setEmail(event.target.value)}
                     />
                   </div>
                   <div className="grid gap-1">
@@ -183,10 +206,10 @@ const Login = ({ onSubmit }: LoginProps) => {
                       value={password}
                       disabled={isLoginLoading}
                       required={true}
-                      onChange={setPassword}
+                      onChange={(event) => setPassword(event.target.value)}
                     />
                   </div>
-                  <Button onClick={handleSubmit} disabled={isLoginLoading}>
+                  <Button onClick={handleButtonClick} disabled={isLoginLoading}>
                     {isLoginLoading && (
                       <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                     )}
@@ -211,7 +234,7 @@ const Login = ({ onSubmit }: LoginProps) => {
                 </div>
               </div>
               <Button
-                onClick={handleGmailLogin}
+                onClick={handleGmailButtonClick}
                 variant="outline"
                 type="button"
                 disabled={gmailLoading}
@@ -245,12 +268,15 @@ const Login = ({ onSubmit }: LoginProps) => {
                     autoCapitalize="none"
                     autoComplete="email"
                     autoCorrect="off"
-                    value={email}
+                    value={magicEmail}
                     disabled={magicLoading}
                     required={true}
-                    onChange={setEmail}
+                    onChange={(event) => setMagicEmail(event.target.value)}
                   />{" "}
-                  <Button onClick={handleEmailLogin} disabled={magicLoading}>
+                  <Button
+                    onClick={handleMagicButtonClick}
+                    disabled={magicLoading}
+                  >
                     {magicLoading && (
                       <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                     )}
@@ -283,5 +309,5 @@ const Login = ({ onSubmit }: LoginProps) => {
       </div>
     </>
   );
-};
-export default Login;
+}
+// export default Login;
