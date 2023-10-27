@@ -3,12 +3,45 @@ import { Button, buttonVariants } from "@/components/ui/button";
 // import { UserAuthForm } from "@/components/auth-form";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../components/authProvider";
+// import { useAuth } from "../components/authProvider";
 import { Icons } from "@/components/icons";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
-import { supabase } from "@/config/supabaseClient";
+import { createContext, useContext, useEffect, useState } from "react";
+import { supabase } from "../config/supabaseClient";
+import { Session, User } from "@supabase/supabase-js";
+
+const AuthContext = createContext({});
+
+export const useAuth = () => useContext(AuthContext);
+
+const login = (email: string, password: string) =>
+  supabase.auth.signInWithPassword({ email, password });
+
+const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [auth, setAuth] = useState(false);
+
+  useEffect(() => {
+    const { data } = supabase.auth.onAuthStateChange(
+      (event, session: Session | null) => {
+        if (event === "SIGNED_IN" && session) {
+          setUser(session.user);
+          setAuth(true);
+        }
+      }
+    );
+    return () => {
+      data.subscription.unsubscribe();
+    };
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ user, login, auth }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
 // interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -35,7 +68,6 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
-  const { login } = useAuth();
   const [isLoginLoading, setIsLoginLoading] = useState(false);
   const [gmailLoading, setGmailLoading] = useState(false);
   const [magicLoading, setMagicLoading] = useState(false);
@@ -52,9 +84,13 @@ export default function Login() {
   const handleGmailLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setGmailLoading(true);
-    if (error) {
-      alert(error.message);
-    } else alert("check your email for the login link");
+    try {
+      const { user, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+      });
+    } catch (error) {
+      setErrorMsg(error.message);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -63,15 +99,15 @@ export default function Login() {
     try {
       setErrorMsg("");
 
-      if (!password.current?.value || !email.current?.value) {
+      if (!password || !email) {
         setErrorMsg("Please fill in the fields");
         setIsLoginLoading(false); // set isLoading to false if there is an error
         return;
       }
-      const {
-        data: { user, session },
-        error,
-      } = await login(email.current.value, password.current.value);
+      const { user, session, error } = await supabase.auth.signIn({
+        email,
+        password,
+      });
       if (error) setErrorMsg(error.message);
       if (user && session) navigate("/");
     } catch (error) {
