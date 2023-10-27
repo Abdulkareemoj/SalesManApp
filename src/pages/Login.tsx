@@ -63,8 +63,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 // const Login = ({ onSubmit }: LoginProps) => {
 export default function Login() {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [magicEmail, setMagicEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
@@ -199,7 +199,7 @@ export default function Login() {
         </div>
         {/*  */}
 
-        {/* Email Password */}
+        {/* Username Password */}
         <div className="lg:p-8">
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
@@ -217,15 +217,15 @@ export default function Login() {
                     </Label>
                     <Input
                       id="email"
-                      placeholder="name@example.com"
+                      placeholder="username"
                       type="email"
                       autoCapitalize="none"
                       autoComplete="email"
                       autoCorrect="off"
-                      value={email}
+                      value={username}
                       disabled={isLoginLoading}
                       required={true}
-                      onChange={(event) => setEmail(event.target.value)}
+                      onChange={(event) => setUsername(event.target.value)}
                     />
                   </div>
                   <div className="grid gap-1">
@@ -304,10 +304,10 @@ export default function Login() {
                     autoCapitalize="none"
                     autoComplete="email"
                     autoCorrect="off"
-                    value={magicEmail}
+                    value={email}
                     disabled={magicLoading}
                     required={true}
-                    onChange={(event) => setMagicEmail(event.target.value)}
+                    onChange={(event) => setEmail(event.target.value)}
                   />{" "}
                   <Button
                     onClick={handleMagicButtonClick}
