@@ -16,12 +16,11 @@ import { Search } from "@/components/search";
 // import TeamSwitcher from "@/components/team-switcher";
 import { UserNav } from "@/components/user-nav";
 // import { supabase } from "../config/supabaseClient";
-import { useAuth } from "../components/authProvider";
 import { ModeToggle } from "../components/mode-toggle";
+import { usePocket } from "../components/context/pocketContext";
 
 export default function DashboardPage() {
-  const { user } = useAuth();
-
+  const { logout, user } = usePocket();
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <>
@@ -53,6 +52,7 @@ export default function DashboardPage() {
               <div className="ml-auto flex items-center space-x-4">
                 <ModeToggle />
                 <Search />
+                <Button onClick={logout}>Logout</Button>
                 <UserNav />
               </div>
             </div>
