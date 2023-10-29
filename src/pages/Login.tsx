@@ -1,77 +1,48 @@
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
-// import { UserAuthForm } from "@/components/auth-form";
-import * as React from "react";
 import { useNavigate } from "react-router-dom";
-// import { useAuth } from "../components/authProvider";
 import { Icons } from "@/components/icons";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { createContext, useContext, useEffect, useState } from "react";
-import { supabase } from "../config/supabaseClient";
-import { Session, User } from "@supabase/supabase-js";
+import React, { useRef, useCallback, useState } from "react";
 
-const AuthContext = createContext({});
-
-export const useAuth = () => useContext(AuthContext);
-
-const login = (email: string, password: string) =>
-  supabase.auth.signInWithPassword({ email, password });
-
-const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [auth, setAuth] = useState(false);
-
-  useEffect(() => {
-    const { data } = supabase.auth.onAuthStateChange(
-      (event, session: Session | null) => {
-        if (event === "SIGNED_IN" && session) {
-          setUser(session.user);
-          setAuth(true);
-        }
-      }
-    );
-    return () => {
-      data.subscription.unsubscribe();
-    };
-  }, []);
-
-  return (
-    <AuthContext.Provider value={{ user, login, auth }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
-
-// interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-// export default function Login({ className, ...props }: UserAuthFormProps) {
-//   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-
-//   async function onSubmit(event: React.SyntheticEvent) {
-//     event.preventDefault();
-//     setIsLoading(true);
-
-//     setTimeout(() => {
-//       setIsLoading(false);
-//     }, 3000);
-//   }
-
-// interface LoginProps {
-//   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-// }
-
-// const Login = ({ onSubmit }: LoginProps) => {
 export default function Login() {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
+  const username = useRef();
+  const email = useRef();
+  const password = useRef();
+  const [errorMsg, setErrorMsg] = useState("")
   const navigate = useNavigate();
   const [isLoginLoading, setIsLoginLoading] = useState(false);
   const [gmailLoading, setGmailLoading] = useState(false);
   const [magicLoading, setMagicLoading] = useState(false);
 
+
+  //username and password login
+  const handleSubmit = useCallback( 
+    async (e: React.FormEvent<HTMLFormElement>) => {
+    e?.preventDefault();
+    setIsLoginLoading(true); // set isLoading to true when the form is submitted
+    try {
+      setErrorMsg("");
+      if (!password || !email) {
+        setErrorMsg("Please fill in the fields");
+        setIsLoginLoading(false); // set isLoading to false if there is an error
+        return;
+      }
+     await login(username.current.value)
+     navigate("/dashboard")
+      if (error) setErrorMsg(error.message);
+      if (user && session) navigate("/");
+    } catch (error) {
+      setErrorMsg("Email or Password Incorrect");
+    }
+    setIsLoginLoading(false); // set isLoading to false after the form submission is complete
+  };
+  [Login]
+)
+
+
+  //fix the magic link login with google
   const handleEmailLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setMagicLoading(true);
@@ -81,6 +52,8 @@ export default function Login() {
     } else alert("check your email for the login link");
   };
 
+
+  //fix the social login
   const handleGmailLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setGmailLoading(true);
@@ -93,29 +66,9 @@ export default function Login() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoginLoading(true); // set isLoading to true when the form is submitted
-    try {
-      setErrorMsg("");
+  
 
-      if (!password || !email) {
-        setErrorMsg("Please fill in the fields");
-        setIsLoginLoading(false); // set isLoading to false if there is an error
-        return;
-      }
-      const { user, session, error } = await supabase.auth.signIn({
-        email,
-        password,
-      });
-      if (error) setErrorMsg(error.message);
-      if (user && session) navigate("/");
-    } catch (error) {
-      setErrorMsg("Email or Password Incorrect");
-    }
-    setIsLoginLoading(false); // set isLoading to false after the form submission is complete
-  };
-
+//special buttons
   const handleButtonClick = () => {
     // call the handleSubmit function when the button is clicked
     handleSubmit(
@@ -213,7 +166,7 @@ export default function Login() {
                 <div className="grid gap-2">
                   <div className="grid gap-1">
                     <Label className="sr-only" htmlFor="email">
-                      Email
+                     Username
                     </Label>
                     <Input
                       id="email"
@@ -222,10 +175,9 @@ export default function Login() {
                       autoCapitalize="none"
                       autoComplete="email"
                       autoCorrect="off"
-                      value={username}
+                      ref={username}
                       disabled={isLoginLoading}
                       required={true}
-                      onChange={(event) => setUsername(event.target.value)}
                     />
                   </div>
                   <div className="grid gap-1">
@@ -239,10 +191,9 @@ export default function Login() {
                       autoCapitalize="none"
                       autoComplete="password"
                       autoCorrect="off"
-                      value={password}
+                     ref={password}
                       disabled={isLoginLoading}
                       required={true}
-                      onChange={(event) => setPassword(event.target.value)}
                     />
                   </div>
                   <Button onClick={handleButtonClick} disabled={isLoginLoading}>
@@ -304,10 +255,9 @@ export default function Login() {
                     autoCapitalize="none"
                     autoComplete="email"
                     autoCorrect="off"
-                    value={email}
+                    ref={email}
                     disabled={magicLoading}
                     required={true}
-                    onChange={(event) => setEmail(event.target.value)}
                   />{" "}
                   <Button
                     onClick={handleMagicButtonClick}
@@ -346,4 +296,3 @@ export default function Login() {
     </>
   );
 }
-// export default Login;
