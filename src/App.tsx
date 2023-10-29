@@ -1,20 +1,26 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Login from "./pages/Login";
-import AuthRoute from "./components/authRoute";
-import DashboardPage from "./pages/dashboard";
+import { Protected } from "./pages/Protected";
+import RequireAuth from "./components/requireAuth";
+import { PocketProvider } from "./components/context/pocketContext";
+import DashboardPage from "./pages/Dashboard";
 
 const App = () => {
   return (
     <>
       <main className="flex align-items-center justify-content-center">
-        <Routes>
-          <Route element={<AuthRoute />}>
-            <Route path="/" element={<DashboardPage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-          </Route>
-          {/* <Route path="/register" element={<Register />} /> */}
-          <Route path="/login" element={<Login />} />
-        </Routes>
+        <PocketProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route index element={<Login />} />
+              <Route element={<RequireAuth />}>
+                <Route path="/Protected" element={<Protected />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/" element={<DashboardPage />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </PocketProvider>
       </main>
     </>
   );
