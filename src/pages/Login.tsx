@@ -5,42 +5,43 @@ import { Icons } from "@/components/icons";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React, { useRef, useCallback, useState } from "react";
+import { usePocket } from "@/components/context/pocketContext";
 
 export default function Login() {
   const username = useRef();
   const email = useRef();
   const password = useRef();
-  const [errorMsg, setErrorMsg] = useState("")
+  const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
   const [isLoginLoading, setIsLoginLoading] = useState(false);
   const [gmailLoading, setGmailLoading] = useState(false);
   const [magicLoading, setMagicLoading] = useState(false);
-
+  const { login } = usePocket();
 
   //username and password login
-  const handleSubmit = useCallback( 
+  const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
-    e?.preventDefault();
-    setIsLoginLoading(true); // set isLoading to true when the form is submitted
-    try {
-      setErrorMsg("");
-      if (!password || !email) {
-        setErrorMsg("Please fill in the fields");
-        setIsLoginLoading(false); // set isLoading to false if there is an error
-        return;
+      e?.preventDefault();
+      setIsLoginLoading(true); // set isLoading to true when the form is submitted
+      try {
+        setErrorMsg("");
+        if (!password || !email) {
+          setErrorMsg("Please fill in the fields");
+          setIsLoginLoading(false); // set isLoading to false if there is an error
+          return;
+        }
+        await login(username.current.value);
+        navigate("/dashboard");
+        //   if (error) setErrorMsg(error.message);
+        //   if (user && session) navigate("/");
+      } catch (error) {
+        setErrorMsg("Email or Password Incorrect");
+        setIsLoginLoading(false); // set isLoading to false after the form submission is complete
       }
-     await login(username.current.value)
-     navigate("/dashboard")
-      if (error) setErrorMsg(error.message);
-      if (user && session) navigate("/");
-    } catch (error) {
-      setErrorMsg("Email or Password Incorrect");
-    }
-    setIsLoginLoading(false); // set isLoading to false after the form submission is complete
-  };
-  [Login]
-)
+    },
 
+    [login]
+  );
 
   //fix the magic link login with google
   const handleEmailLogin = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -51,7 +52,6 @@ export default function Login() {
       alert(error.message);
     } else alert("check your email for the login link");
   };
-
 
   //fix the social login
   const handleGmailLogin = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -66,9 +66,7 @@ export default function Login() {
     }
   };
 
-  
-
-//special buttons
+  //special buttons
   const handleButtonClick = () => {
     // call the handleSubmit function when the button is clicked
     handleSubmit(
@@ -166,7 +164,7 @@ export default function Login() {
                 <div className="grid gap-2">
                   <div className="grid gap-1">
                     <Label className="sr-only" htmlFor="email">
-                     Username
+                      Username
                     </Label>
                     <Input
                       id="email"
@@ -191,7 +189,7 @@ export default function Login() {
                       autoCapitalize="none"
                       autoComplete="password"
                       autoCorrect="off"
-                     ref={password}
+                      ref={password}
                       disabled={isLoginLoading}
                       required={true}
                     />
