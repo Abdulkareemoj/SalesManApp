@@ -1,11 +1,11 @@
-import { createContext, useContext, useEffect, useState, useCallback useMemo } from "react";
+import { createContext, useContext, useEffect, useState, useCallback, useMemo } from "react";
 import PocketBase from "pocketbase"
 import {useInterval} from "usehooks-ts"
 import jwtDecode from "jwt-decode"
 import ms from "ms"
 
 
-const BASE_URL = url
+const BASE_URL = http://127.0.0.1/8090
 const fiveMinutesInMs = ms("5 minutes")
 const twoMinutesInMs = ms("2 minutes")
 const PocketContext = createContext({})
@@ -18,7 +18,7 @@ const [token, setToken] = useState(pb.authStore.token)
 const [user, setUser] = useState(pb.authStore.model)
 
 useEffect(() => {
-  return pb.authStore.onChange((tokenm model) => {
+  return pb.authStore.onChange((token, model) => {
     setToken(token)
     setModel(model)
   })
@@ -30,7 +30,7 @@ useEffect(() => {
 // .create({username, password, passwordConfirm: password })
 // }, [])
 
-const login = useCallback(async(username, password) =>{
+const login = useCallback(async (username, password) =>{
 return await pb
 .collection("users").authWithPassword(username,password)
 }, [])
