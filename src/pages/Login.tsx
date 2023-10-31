@@ -6,17 +6,24 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React, { useRef, useCallback, useState } from "react";
 import { usePocket } from "@/components/context/pocketContext";
+import PocketBase from "pocketbase";
+
+const BASE_URL = "http://127.0.0.1/8090";
+const pb = new PocketBase(BASE_URL);
 
 export default function Login() {
-  const username = useRef();
-  const email = useRef();
-  const password = useRef();
+  const username = useRef<HTMLInputElement>(null);
+  const email = useRef<HTMLInputElement>(null);
+  const password = useRef<HTMLInputElement>(null);
   const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
   const [isLoginLoading, setIsLoginLoading] = useState(false);
   const [gmailLoading, setGmailLoading] = useState(false);
   const [magicLoading, setMagicLoading] = useState(false);
-  const { login } = usePocket();
+  // const { login } = usePocket();
+  const { login } = usePocket() as {
+    login: (username: string, password: string) => Promise<void>;
+  };
 
   //username and password login
   const handleSubmit = useCallback(
@@ -25,22 +32,25 @@ export default function Login() {
       setIsLoginLoading(true); // set isLoading to true when the form is submitted
       try {
         setErrorMsg("");
-        if (!password || !email) {
+        if (!password || !username) {
           setErrorMsg("Please fill in the fields");
           setIsLoginLoading(false); // set isLoading to false if there is an error
           return;
         }
-        await login(username.current.value);
+        // await login(username.current.value);
+        if (username.current && password.current) {
+          await login(username.current.value, password.current.value);
+        }
         navigate("/dashboard");
         //   if (error) setErrorMsg(error.message);
         //   if (user && session) navigate("/");
       } catch (error) {
-        setErrorMsg("Email or Password Incorrect");
+        setErrorMsg("Username or Password Incorrect");
         setIsLoginLoading(false); // set isLoading to false after the form submission is complete
       }
     },
 
-    [login]
+    [login, navigate]
   );
 
   //fix the magic link login with google
@@ -53,37 +63,39 @@ export default function Login() {
     } else alert("check your email for the login link");
   };
 
-  //fix the social login
   const handleGmailLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setGmailLoading(true);
     try {
-      const { user, error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-      });
+      const authData = await pb
+        .collection("users")
+        .authWithOAuth2({ provider: "google" });
+      return authData;
     } catch (error) {
       setErrorMsg(error.message);
+    } finally {
+      setGmailLoading(false);
     }
   };
 
   //special buttons
   const handleButtonClick = () => {
     // call the handleSubmit function when the button is clicked
-    handleSubmit(
+    void handleSubmit(
       new Event("submit") as unknown as React.FormEvent<HTMLFormElement>
     );
   };
 
   const handleGmailButtonClick = () => {
     // call the handleSubmit function when the button is clicked
-    handleGmailLogin(
+    void handleGmailLogin(
       new Event("submit") as unknown as React.FormEvent<HTMLFormElement>
     );
   };
 
   const handleMagicButtonClick = () => {
     // call the handleSubmit function when the button is clicked
-    handleEmailLogin(
+    void handleEmailLogin(
       new Event("submit") as unknown as React.FormEvent<HTMLFormElement>
     );
   };
