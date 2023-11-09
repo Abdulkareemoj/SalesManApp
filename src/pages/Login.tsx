@@ -54,14 +54,14 @@ export default function Login() {
   );
 
   //fix the magic link login with google
-  const handleEmailLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setMagicLoading(true);
-    const { error } = await supabase.auth.signInWithOtp({ email });
-    if (error) {
-      alert(error.message);
-    } else alert("check your email for the login link");
-  };
+  // const handleEmailLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   setMagicLoading(true);
+  //   const { error } = await supabase.auth.signInWithOtp({ email });
+  //   if (error) {
+  //     alert(error.message);
+  //   } else alert("check your email for the login link");
+  // };
 
   const handleGmailLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -93,12 +93,12 @@ export default function Login() {
     );
   };
 
-  const handleMagicButtonClick = () => {
-    // call the handleSubmit function when the button is clicked
-    void handleEmailLogin(
-      new Event("submit") as unknown as React.FormEvent<HTMLFormElement>
-    );
-  };
+  // const handleMagicButtonClick = () => {
+  //   // call the handleSubmit function when the button is clicked
+  //   void handleEmailLogin(
+  //     new Event("submit") as unknown as React.FormEvent<HTMLFormElement>
+  //   );
+  // };
 
   return (
     <>
