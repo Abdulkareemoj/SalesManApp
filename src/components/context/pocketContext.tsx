@@ -40,8 +40,13 @@ export const PocketProvider = ({ children }: PocketProviderProps) => {
 
   const login = useCallback(
     async (username: string, password: string) => {
-      const authData = await pb.collection("users").authWithPassword(username, password);
-      return authData
+      const authData = await pb
+        .collection("users")
+        .authWithPassword(username, password);
+      console.log(pb.authStore.isValid);
+      console.log(pb.authStore.token);
+      // console.log(pb.authStore.model.id);
+      return authData;
     },
     [pb]
   );
