@@ -1,198 +1,93 @@
-# React + TypeScript + Vite
+<a href="https://demo-nextjs-with-supabase.vercel.app/">
+  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
+  <h1 align="center">Next.js and Supabase Starter Kit</h1>
+</a>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<p align="center">
+ The fastest way to build apps with Next.js and Supabase
+</p>
 
-Currently, two official plugins are available:
+<p align="center">
+  <a href="#features"><strong>Features</strong></a> ·
+  <a href="#demo"><strong>Demo</strong></a> ·
+  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
+  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
+  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
+  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
+</p>
+<br/>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- Works across the entire [Next.js](https://nextjs.org) stack
+  - App Router
+  - Pages Router
+  - Middleware
+  - Client
+  - Server
+  - It just works!
+- supabase-ssr. A package to configure Supabase Auth to use cookies
+- Styling with [Tailwind CSS](https://tailwindcss.com)
+- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
+  - Environment variables automatically assigned to Vercel project
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Demo
 
-- Configure the top-level `parserOptions` property like this:
+You can view a fully working demo at [demo-nextjs-with-supabase.vercel.app](https://demo-nextjs-with-supabase.vercel.app/).
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+## Deploy to Vercel
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Vercel deployment will guide you through creating a Supabase account and project.
 
+After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This%20starter%20configures%20Supabase%20Auth%20to%20use%20cookies%2C%20making%20the%20user's%20session%20available%20throughout%20the%20entire%20Next.js%20app%20-%20Client%20Components%2C%20Server%20Components%2C%20Route%20Handlers%2C%20Server%20Actions%20and%20Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png&integration-ids=oac_VqOgBHqhEoFTPzGkPd7L0iH6)
 
-<!-- TABLE OF CONTENTS -->
+The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
 
-# 📗 Table of Contents
+If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
 
-- [React + TypeScript + Vite](#react--typescript--vite)
-  - [Expanding the ESLint configuration](#expanding-the-eslint-configuration)
-- [📗 Table of Contents](#-table-of-contents)
-- [📖 Blog-App ](#-blog-app-)
-  - [🛠 Built With ](#-built-with-)
-    - [Key Features ](#key-features-)
-  - [🚀 Live Demo ](#-live-demo-)
-  - [💻 Getting Started ](#-getting-started-)
-    - [Prerequisites](#prerequisites)
-    - [Setup](#setup)
-    - [Install](#install)
-    - [Usage](#usage)
-    - [Run tests](#run-tests)
-    - [Deployment](#deployment)
-  - [👥 Authors ](#-authors-)
-  - [🔭 Future Features ](#-future-features-)
-  - [🤝 Contributing ](#-contributing-)
-  - [⭐️ Show your support ](#️-show-your-support-)
-  - [📝 License ](#-license-)
-<!-- - [❓ FAQ (OPTIONAL)](#faq) -->
-- [📝 License](#license)
+## Clone and run locally
 
-<!-- PROJECT DESCRIPTION -->
+1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
 
-# 📖 Blog-App <a name="about-project"></a>
+2. Create a Next.js app using the Supabase Starter template npx command
 
-**simple-t3blog** is an app that allows users to view and comment on posts and perform actions such as liking and commenting on these blog posts.
+   ```bash
+   npx create-next-app -e with-supabase
+   ```
 
-## 🛠 Built With <a name="built-with"></a>
+3. Use `cd` to change into the app's directory
 
-[React](https://create.t3.gg/) project bootstrapped with `vite`.
-[PocketBase](https://graphql.org/).
-[Typescript](https://graphql.org/).
-[TailwindCSS](https://graphql.org/).
-[shadcn](https://graphql.org/).
-<!-- Features -->
+   ```bash
+   cd name-of-new-app
+   ```
 
-### Key Features <a name="key-features"></a>
+4. Rename `.env.local.example` to `.env.local` and update the following:
 
-- [ ] **Added validations For the User model**
-- [ ] **Added validations For the post model**
-- [ ] **Add unit specs for all of your models' methods and validations.**
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=[INSERT SUPABASE PROJECT API ANON KEY]
+   ```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+   Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` can be found in [your Supabase project's API settings](https://app.supabase.com/project/_/settings/api)
 
-<!-- LIVE DEMO -->
+5. You can now run the Next.js local development server:
 
-## 🚀 Live Demo <a name="live-demo"></a>
+   ```bash
+   npm run dev
+   ```
 
-Not Deployed Yet.
+   The starter kit should now be running on [localhost:3000](http://localhost:3000/).
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
 
-<!-- GETTING STARTED -->
+## Feedback and issues
 
-## 💻 Getting Started <a name="getting-started"></a>
+Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
 
-To get a local copy up and running, follow these steps.
+## More Supabase examples
 
-### Prerequisites
-
-In order to run this project you need:
-- Know how to navigate directories or folders at the CLI.
-- Know how to get the URL(https/ssh) of a repository on GitHub.
-- You should have a code editor installed, VSCode or a Terminal editor like vim is fine.
-
-
-### Setup
- In order to run this project you need:
- 
-Clone this repository to your desired folder:
-
-```sh
-  git clone git@github.com
-```
-
-### Install
-
-Install this project with:
-
-```sh
-  cd simple-t3blog
-  npm install
-```
-
-### Usage
-
-To run the project, execute the following command:
-
-```sh
-  npm run dev
-```
-
-### Run tests
-
-To run tests, run the following command:
-
-```sh
- rspec spec
-```
-
-### Deployment
-
-You can deploy this project using:
-
-<!--
-Example:
-
-```sh
-
-```
- -->
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- AUTHORS -->
-
-## 👥 Authors <a name="authors"></a>
-
-👤 **Abdulkareem Ojerinde**
-
-- GitHub: [@Abdulkareemoj](https://github.com/Abdulkareemoj)
-- Twitter: [@abdulkareemoj](https://twitter.com/abdulkareemoj)
-- LinkedIn: [Abdulkareem Ojerinde](https://linkedin.com/in/abdulkareem-ojerinde)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- FUTURE FEATURES -->
-
-## 🔭 Future Features <a name="future-features"></a>
-
-You can suggest some by creating an [issue](../../../issues/).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- CONTRIBUTING -->
-
-## 🤝 Contributing <a name="contributing"></a>
-
-Contributions, issues, and feature requests are always welcome!
-
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- SUPPORT -->
-
-## ⭐️ Show your support <a name="support"></a>
-
-If you like this project give me ⭐
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- ACKNOWLEDGEMENTS -->
-
-<!-- LICENSE -->
-
-## 📝 License <a name="license"></a>
-
-This project is [MIT](./LICENSE) licensed.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-<!-- 
-admin@demo.com
-pentagon56 -->
+- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
+- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
+- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
