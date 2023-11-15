@@ -1,4 +1,6 @@
 "use server";
+import { cookies } from "next/headers";
+
 const signIn = async (formData: FormData) => {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;

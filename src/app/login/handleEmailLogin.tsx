@@ -1,5 +1,7 @@
 //Email magic link
 "use server";
+import { cookies } from "next/headers";
+
 const handleEmailLogin = async (formData: FormData) => {
   const email = formData.get("email") as string;
   const cookieStore = cookies();
