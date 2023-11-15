@@ -1,6 +1,7 @@
 //Email magic link
 "use server";
 import { cookies } from "next/headers";
+import { createClient } from "@/utils/supabase/server";
 
 const handleEmailLogin = async (formData: FormData) => {
   const email = formData.get("email") as string;
