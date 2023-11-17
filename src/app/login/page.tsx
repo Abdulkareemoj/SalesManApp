@@ -1,4 +1,3 @@
-"use client";
 import Link from "next/link";
 import { headers, cookies } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
@@ -9,9 +8,6 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useState } from "react";
-import signIn from "./signIn";
-import handleEmailLogin from "./handleEmailLogin";
-import handleGmailLogin from "./handleGmailLogin";
 
 export default function Login({
   searchParams,
@@ -21,33 +17,92 @@ export default function Login({
   const [isLoginLoading, setIsLoginLoading] = useState(false);
   const [gmailLoading, setGmailLoading] = useState(false);
   const [magicLoading, setMagicLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // oauth
+  //email password
+  const signIn = async (formData: FormData) => {
+    "use server";
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
 
-  const handleButtonClick = async (event) => {
-    event.preventDefault();
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
     setIsLoginLoading(true);
-    const formData = new FormData(event.target);
-    await signIn(formData);
+
+    if (error) {
+      return redirect("/login?message=Could not authenticate user");
+    }
     setIsLoginLoading(false);
+    return redirect("/");
   };
 
-  const handleGmailLoginClick = async (event) => {
-    event.preventDefault();
-    setGmailLoading(true);
-    await signInWithGoogle();
-    setGmailLoading(false);
-  };
-
-  const handleMagicButtonClick = async (event) => {
-    event.preventDefault();
+  // magiclink
+  const handleEmailLogin = async (formData: FormData) => {
+    "use server";
+    const email = formData.get("email") as string;
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
     setMagicLoading(true);
-    const formData = new FormData(event.target);
-    await handleEmailLogin(formData);
-    setMagicLoading(false);
+    const { error } = await supabase.auth.signInWithOtp({ email });
+    if (error) {
+      alert(error.message);
+    } else alert("check your email for the login link");
+  };
+  // oauth
+  const handleGmailLogin = async () => {
+    "use server";
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+    setGmailLoading(true);
+    try {
+      const {
+        data: { url },
+        error,
+      } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+      });
+      if (error) {
+        setErrorMsg(error.message ?? "An unknown error occurred");
+      } else {
+        // Redirect
+      }
+    } catch (error) {
+      setErrorMsg("An error occurred during sign in");
+    } finally {
+      setGmailLoading(false);
+    }
   };
 
+  // const handleGmailLoginClick = async (
+  //   event: React.MouseEvent<HTMLFormElement>
+  // ) => {
+  //   event.preventDefault();
+  //   setGmailLoading(true);
+  //   await handleGmailLogin();
+  //   setGmailLoading(false);
+  // };
+
+  // const handleButtonClick = async (event: React.MouseEvent) => {
+  //   event.preventDefault();
+  //   setIsLoginLoading(true);
+  //   const formData = new FormData(event.target as HTMLFormElement);
+  //   await signIn(formData);
+  //   setIsLoginLoading(false);
+  // };
+
+  // const handleMagicButtonClick = async (
+  //   event: React.FormEvent<HTMLButtonElement>
+  // ) => {
+  //   event.preventDefault();
+  //   setMagicLoading(true);
+  //   const formData = new FormData(event.currentTarget);
+  //   await handleEmailLogin(formData);
+  //   setMagicLoading(false);
+  // };
   // const signUp = async (formData: FormData) => {
   //   "use server";
 
@@ -74,22 +129,6 @@ export default function Login({
 
   return (
     <div>
-      <div className="md:hidden">
-        <img
-          src="authentication-light.png"
-          width={1280}
-          height={843}
-          alt="Authentication"
-          className="block dark:hidden"
-        />
-        <img
-          src="authentication-dark.png"
-          width={1280}
-          height={843}
-          alt="Authentication"
-          className="hidden dark:block"
-        />
-      </div>
       <div className="container relative hidden h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
         <Button
           type="submit"
@@ -175,7 +214,10 @@ export default function Login({
                       required
                     />
                   </div>
-                  <Button onClick={handleButtonClick} disabled={isLoginLoading}>
+                  <Button
+                    // onClick={handleButtonClick}
+                    disabled={isLoginLoading}
+                  >
                     {isLoginLoading && (
                       <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                     )}
@@ -215,8 +257,7 @@ export default function Login({
               {/* End */}
 
               {/* Magic Link */}
-
-              <form onSubmit={handleEmailLogin}>
+              <form action={handleEmailLogin}>
                 <div className="relative flex justify-center text-xs uppercase">
                   <span className="bg-background px-2  text-muted-foreground">
                     Alternatively, Get a link to login
@@ -236,9 +277,9 @@ export default function Login({
                     autoCorrect="off"
                     disabled={magicLoading}
                     required
-                  />{" "}
+                  />
                   <Button
-                    onClick={handleMagicButtonClick}
+                    // onClick={handleMagicButtonClick}
                     disabled={magicLoading}
                   >
                     {magicLoading && (
@@ -251,14 +292,14 @@ export default function Login({
               {/* End */}
             </div>
             <p className="px-8 text-center text-sm text-muted-foreground">
-              By clicking continue, you agree to our{" "}
+              By clicking continue, you agree to our
               <a
                 href="/terms"
                 className="underline underline-offset-4 hover:text-primary"
               >
                 Terms of Service
-              </a>{" "}
-              and{" "}
+              </a>
+              and
               <a
                 href="/privacy"
                 className="underline underline-offset-4 hover:text-primary"
@@ -270,141 +311,7 @@ export default function Login({
             <div></div>
           </div>
         </div>
-      </div>{" "}
+      </div>
     </div>
   );
 }
-
-{
-  /* 
-      {/* <form
-        className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground"
-        action={signIn}
-      >
-        <label className="text-md" htmlFor="email">
-          Email
-        </label>
-        <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6"
-          name="email"
-          placeholder="you@example.com"
-          required
-        />
-        <label className="text-md" htmlFor="password">
-          Password
-        </label>
-        <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6"
-          type="password"
-          name="password"
-          placeholder="••••••••"
-          required
-        />
-        <button className="bg-green-700 rounded-md px-4 py-2 text-foreground mb-2">
-          Sign In
-        </button>
-        <button
-          formAction={signUp}
-          className="border border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2"
-        >
-          Sign Up
-        </button>
-        {searchParams?.message && (
-          <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
-            {searchParams.message}
-          </p>
-        )}
-      </form>
-    </div>
-  );
-}
- */
-}
-
-{
-  /* 
-
-
-// export default function Login() 
-//   const [username, setUsername] = useState("");
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [errorMsg, setErrorMsg] = useState("");
-//   const navigate = useNavigate();
-//   const [isLoginLoading, setIsLoginLoading] = useState(false);
-//   const [gmailLoading, setGmailLoading] = useState(false);
-//   const [magicLoading, setMagicLoading] = useState(false);
-
-//   const handleEmailLogin = async (e: React.FormEvent<HTMLFormElement>) => { 
-//     e.preventDefault();
-//     setMagicLoading(true);
-//     const { error } = await supabase.auth.signInWithOtp({ email });
-//     if (error) {
-//       alert(error.message);
-//     } else alert("check your email for the login link");
-//   };
-
-//   const handleGmailLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-//     e.preventDefault();
-//     setGmailLoading(true);
-//     try {
-//       const { user, error } = await supabase.auth.signInWithOAuth({
-//         provider: "google",
-//       });
-//     } catch (error) {
-//       setErrorMsg(error.message);
-//     }
-//   };
-
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   setIsLoginLoading(true); // set isLoading to true when the form is submitted
-  //   try {
-  //     setErrorMsg("");
-
-  //     if (!password || !email) {
-  //       setErrorMsg("Please fill in the fields");
-  //       setIsLoginLoading(false); // set isLoading to false if there is an error
-  //       return;
-  //     }
-  //     const { user, session, error } = await supabase.auth.signIn({
-  //       email,
-  //       password,
-  //     });
-  //     if (error) setErrorMsg(error.message);
-  //     if (user && session) navigate("/");
-  //   } catch (error) {
-  //     setErrorMsg("Email or Password Incorrect");
-  //   }
-  //   setIsLoginLoading(false); // set isLoading to false after the form submission is complete
-  // };
-
-//   const handleButtonClick = () => {
-//     // call the handleSubmit function when the button is clicked
-//     handleSubmit(
-//       new Event("submit") as unknown as React.FormEvent<HTMLFormElement>
-//     );
-//   };
-
-//   const handleGmailButtonClick = () => {
-//     // call the handleSubmit function when the button is clicked
-//     handleGmailLogin(
-//       new Event("submit") as unknown as React.FormEvent<HTMLFormElement>
-//     );
-//   };
-
-//   const handleMagicButtonClick = () => {
-//     // call the handleSubmit function when the button is clicked
-//     handleEmailLogin(
-//       new Event("submit") as unknown as React.FormEvent<HTMLFormElement>
-//     );
-//   };
-
-//   return (
-//     <>
-//       {/*  */
-}
-
-//     </>
-//   );
-// } */}
