@@ -20,7 +20,6 @@ export default function Login({
 
   //email password
   const signIn = async (formData: FormData) => {
-    "use server";
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     const cookieStore = cookies();
@@ -41,7 +40,6 @@ export default function Login({
 
   // magiclink
   const handleEmailLogin = async (formData: FormData) => {
-    "use server";
     const email = formData.get("email") as string;
     const cookieStore = cookies();
     const supabase = createClient(cookieStore);
@@ -53,7 +51,6 @@ export default function Login({
   };
   // oauth
   const handleGmailLogin = async () => {
-    "use server";
     const cookieStore = cookies();
     const supabase = createClient(cookieStore);
     setGmailLoading(true);
