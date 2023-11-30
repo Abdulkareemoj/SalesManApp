@@ -6,21 +6,23 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 
-export function LoginClient({
-  signIn,
-  handleEmailLogin,
-  handleGmailLogin,
-}: {
+interface LoginClientProps {
   signIn: (formData: FormData) => Promise<void>;
   handleEmailLogin: (formData: FormData) => Promise<void>;
   handleGmailLogin: (
     event: React.MouseEvent<HTMLButtonElement>
   ) => Promise<void>;
-}) {
+}
+
+const LoginClient: React.FC<LoginClientProps> = ({
+  signIn,
+  handleEmailLogin,
+  handleGmailLogin,
+}) => {
   const [isLoginLoading, setIsLoginLoading] = useState(false);
   const [gmailLoading, setGmailLoading] = useState(false);
   const [magicLoading, setMagicLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  // const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   // Handle form submission
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -129,9 +131,9 @@ export function LoginClient({
                     )}
                     Sign In
                   </Button>
-                  <span className="alert alert-danger" role="alert">
+                  {/* <span className="alert alert-danger" role="alert">
                     {errorMsg}
-                  </span>
+                  </span> */}
                 </div>
               </form>
               {/* End */}
@@ -220,4 +222,5 @@ export function LoginClient({
       </div>
     </div>
   );
-}
+};
+export default LoginClient;

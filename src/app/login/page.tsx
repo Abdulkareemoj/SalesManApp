@@ -1,13 +1,12 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { LoginClient } from "./LoginClient";
+import LoginClient from "./LoginClient";
 import { headers, cookies } from "next/headers";
+
 export default function LoginServer({
   searchParams,
-  setErrorMsg,
 }: {
   searchParams: { message: string };
-  setErrorMsg: (msg: string) => void;
 }) {
   // email password
   const signIn = async (formData: FormData) => {
@@ -32,13 +31,20 @@ export default function LoginServer({
   const handleEmailLogin = async (formData: FormData) => {
     "use server";
 
-    const email = formData.get("email") as string;
-    const cookieStore = cookies();
-    const supabase = createClient(cookieStore);
-    const { error } = await supabase.auth.signInWithOtp({ email });
-    if (error) {
-      setErrorMsg(error.message);
-    } else alert("check your email for the login link");
+    try {
+      const email = formData.get("email") as string;
+      const cookieStore = cookies();
+      const supabase = createClient(cookieStore);
+      const { error } = await supabase.auth.signInWithOtp({ email });
+      if (error) {
+        throw new Error(error.message);
+      } else {
+        alert("check your email for the login link");
+      }
+    } catch (error) {
+      console.error(error);
+      // Handle the error appropriately
+    }
   };
 
   // oauth
@@ -46,9 +52,10 @@ export default function LoginServer({
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     "use server";
-    const cookieStore = cookies();
-    const supabase = createClient(cookieStore);
+
     try {
+      const cookieStore = cookies();
+      const supabase = createClient(cookieStore);
       const {
         data: { url },
         error,
@@ -56,10 +63,11 @@ export default function LoginServer({
         provider: "google",
       });
       if (error) {
-        setErrorMsg(error.message ?? "An unknown error occurred");
+        throw new Error(error.message ?? "An unknown error occurred");
       }
     } catch (error) {
-      setErrorMsg("An error occurred during sign in");
+      console.error(error);
+      // Handle the error appropriately
     }
   };
 
