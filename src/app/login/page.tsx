@@ -16,14 +16,16 @@ export default function LoginServer({
     const password = formData.get("password") as string;
     const cookieStore = cookies();
     const supabase = createClient(cookieStore);
-
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (error) {
       return redirect("/login?message=Could not authenticate user");
+    } else if (data?.user) {
+      // Redirect to the Dashboard route
+      return redirect("/dashboard");
     }
   };
 
@@ -63,7 +65,9 @@ export default function LoginServer({
         provider: "google",
       });
       if (error) {
-        throw new Error(error.message ?? "An unknown error occurred");
+        return redirect("/login?message=Could not authenticate user");
+      } else {
+        return redirect("/dashboard");
       }
     } catch (error) {
       console.error(error);
