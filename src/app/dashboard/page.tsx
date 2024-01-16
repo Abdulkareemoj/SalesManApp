@@ -1,3 +1,5 @@
+"use client";
+
 import { Metadata } from "next";
 import Image from "next/image";
 
@@ -18,14 +20,15 @@ import { Search } from "@/components/search";
 import TeamSwitcher from "@/components/team-switcher";
 import { UserNav } from "@/components/user-nav";
 
-export const metadata: Metadata = {
+import { SessionAuth } from "supertokens-auth-react/recipe/session";
+const metadata: Metadata = {
   title: "Dashboard",
   description: "Welcome.",
 };
 
 export default function DashboardPage() {
   return (
-    <>
+    <SessionAuth>
       <div className="hidden flex-col md:flex">
         <div className="border-b">
           <div className="flex h-16 items-center px-4">
@@ -187,6 +190,6 @@ export default function DashboardPage() {
           </Tabs>
         </div>
       </div>
-    </>
+    </SessionAuth>
   );
 }
