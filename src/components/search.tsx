@@ -1,11 +1,12 @@
+import { InputHTMLAttributes } from "react";
 import { Input } from "./ui/input";
 
-export function Search() {
+export function Search({ placeholder }: any) {
   return (
     <div>
       <Input
         type="search"
-        placeholder="Search..."
+        placeholder={placeholder}
         className="md:w-[100px] lg:w-[300px]"
       />
     </div>
