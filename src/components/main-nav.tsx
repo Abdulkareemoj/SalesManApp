@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 
+//remember to do hover and pathname function
 export function MainNav({
   className,
   ...props
@@ -12,25 +13,25 @@ export function MainNav({
       {...props}
     >
       <Link
-        href="/examples/dashboard"
+        href="/dashboard/"
         className="text-sm font-medium transition-colors hover:text-primary"
       >
         Overview
       </Link>
       <Link
-        href="/examples/dashboard"
+        href="/dashboard/customers"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         Customers
       </Link>
       <Link
-        href="/examples/dashboard"
+        href="/dashboard/products"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         Products
       </Link>
       <Link
-        href="/examples/dashboard"
+        href="/dashboard/"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         Settings
