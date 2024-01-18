@@ -19,13 +19,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={GeistSans.className}>
-      <SuperTokensProvider>
-        <body className="bg-background text-foreground">
-          <main className="min-h-screen flex flex-col items-center">
-            {children}
-          </main>
-        </body>
-      </SuperTokensProvider>
+      <body className="bg-background text-foreground">
+        <SuperTokensProvider>
+          <main>{children}</main>
+        </SuperTokensProvider>
+      </body>
     </html>
   );
 }
