@@ -180,6 +180,8 @@ export default function DashboardPage() {
             </div>
           </TabsContent>
           <TabsContent value="analytics">Hello</TabsContent>
+          <TabsContent value="reports">Dunno</TabsContent>
+          <TabsContent value="notifications">Goodbye</TabsContent>
         </Tabs>
       </div>
     </div>
