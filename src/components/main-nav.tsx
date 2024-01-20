@@ -1,7 +1,11 @@
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
 
+const pathname = usePathname()
+
+// if pathname === href
 //remember to do hover and pathname function
 export function MainNav({
   className,
@@ -31,7 +35,7 @@ export function MainNav({
         Products
       </Link>
       <Link
-        href="/dashboard/"
+        href="/dashboard/settings"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         Settings
