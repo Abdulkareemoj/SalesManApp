@@ -1,22 +1,65 @@
+"use client";
 import Link from "next/link";
-
+import {
+  HomeIcon,
+  AvatarIcon,
+  ArchiveIcon,
+  GearIcon,
+} from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
+import { buttonVariants } from "@/components/ui/button";
 
-const pathname = usePathname()
+type NavigationItem = {
+  href: string;
+  icon: React.ComponentType;
+  name: string;
+};
 
-// if pathname === href
-//remember to do hover and pathname function
+const navigation: NavigationItem[] = [
+  { href: "/dashboard", icon: HomeIcon, name: "Dashboard" },
+  { href: "/dashboard/customers", icon: AvatarIcon, name: "Customers" },
+  { href: "/dashboard/products", icon: ArchiveIcon, name: "Products" },
+  { href: "/dashboard/settings", icon: GearIcon, name: "Settings" },
+];
+
+// const isActivePath = (path: string) => {
+//   if (path === "/" && pathname !== path) {
+//     return false;
+//   }
+//   return pathname.startsWith(path);
+// };
+
+// return isActivePath;
+
 export function MainNav({
   className,
   ...props
 }: React.HTMLAttributes<HTMLElement>) {
+  const pathname = usePathname();
   return (
     <nav
       className={cn("flex items-center space-x-4 lg:space-x-6", className)}
       {...props}
     >
-      <Link
+      <ul>
+        {navigation.map(({ href, icon: Icon, name }) => (
+          <li key={href}>
+            <Link
+              href={href}
+              className={cn(
+                buttonVariants({ variant: "ghost" }),
+                pathname === href ? "bg-black text-white dark:bg-white" : "",
+                "justify-start"
+              )}
+            >
+              <Icon />
+              <span>{name}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+      {/* <Link
         href="/dashboard/"
         className="text-sm font-medium transition-colors hover:text-primary"
       >
@@ -39,7 +82,7 @@ export function MainNav({
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         Settings
-      </Link>
+      </Link> */}
     </nav>
   );
 }
