@@ -23,15 +23,6 @@ const navigation: NavigationItem[] = [
   { href: "/dashboard/settings", icon: GearIcon, name: "Settings" },
 ];
 
-// const isActivePath = (path: string) => {
-//   if (path === "/" && pathname !== path) {
-//     return false;
-//   }
-//   return pathname.startsWith(path);
-// };
-
-// return isActivePath;
-
 export function MainNav({
   className,
   ...props
@@ -39,50 +30,24 @@ export function MainNav({
   const pathname = usePathname();
   return (
     <nav
-      className={cn("flex items-center space-x-4 lg:space-x-6", className)}
+      className={cn(" flex relative justify-start gap-2", className)}
       {...props}
     >
-      <ul>
-        {navigation.map(({ href, icon: Icon, name }) => (
-          <li key={href}>
-            <Link
-              href={href}
-              className={cn(
-                buttonVariants({ variant: "ghost" }),
-                pathname === href ? "bg-black text-white dark:bg-white" : "",
-                "justify-start"
-              )}
-            >
-              <Icon />
-              <span>{name}</span>
-            </Link>
-          </li>
-        ))}
-      </ul>
-      {/* <Link
-        href="/dashboard/"
-        className="text-sm font-medium transition-colors hover:text-primary"
-      >
-        Overview
-      </Link>
-      <Link
-        href="/dashboard/customers"
-        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-      >
-        Customers
-      </Link>
-      <Link
-        href="/dashboard/products"
-        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-      >
-        Products
-      </Link>
-      <Link
-        href="/dashboard/settings"
-        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-      >
-        Settings
-      </Link> */}
+      {navigation.map(({ href, icon: Icon, name }) => (
+        <div key={href}>
+          <Link
+            href={href}
+            className={cn(
+              buttonVariants({ variant: "ghost" }),
+              pathname === href ? "bg-black text-white dark:bg-white" : "",
+              "justify-start"
+            )}
+          >
+            <Icon />
+            <span className="	px-2">{name}</span>
+          </Link>
+        </div>
+      ))}
     </nav>
   );
 }
