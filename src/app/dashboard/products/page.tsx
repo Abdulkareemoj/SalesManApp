@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Product, columns } from "./columns";
 import { DataTable } from "./data-table";
 
-async function getData(): Promise<Customer[]> {
+async function getData(): Promise<Product[]> {
   // Fetch data from your API here.
   return [
     {
