@@ -14,12 +14,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Product = {
-  name: string;
-  createdAt: Date;
   id: string;
-  amount: number;
+  productName: string;
+  description: string;
+  createdAt: Date;
+  stock: number;
+  price: number;
   status: "pending" | "processing" | "success" | "failed";
-  email: string;
+  supplier: string;
 };
 export const columns: ColumnDef<Product>[] = [
   {
@@ -45,7 +47,7 @@ export const columns: ColumnDef<Product>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "name",
+    accessorKey: "productName",
     header: ({ column }) => {
       return (
         <Button
@@ -59,30 +61,48 @@ export const columns: ColumnDef<Product>[] = [
     },
   },
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "description",
+    header: "Description",
   },
 
-  {
-    accessorKey: "quantity",
-    header: "Quantity",
-  },
   {
     accessorKey: "createdAt",
     header: "Created At",
   },
   {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
+    accessorKey: "stock",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Stock
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "price",
+    header: () => <div className="text-right">Price</div>,
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
+      const price = parseFloat(row.getValue("price"));
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
-      }).format(amount);
+      }).format(price);
 
       return <div className="text-right font-medium">{formatted}</div>;
     },
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+  },
+  {
+    accessorKey: "supplier",
+    header: "Supplier",
   },
   {
     id: "actions",

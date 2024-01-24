@@ -15,9 +15,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 // You can use a Zod schema here if you want.
 export type Customer = {
   id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
+  name: string;
+  username: string;
   email: string;
+  createdAt: Date;
+  role: "user" | "admin";
+  status: "pending" | "processing" | "success" | "failed";
+  subscriptionTier: "free" | "basic" | "business";
 };
 
 export const columns: ColumnDef<Customer>[] = [
@@ -44,8 +48,22 @@ export const columns: ColumnDef<Customer>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "name",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Customer Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "username",
+    header: "Username",
   },
   {
     accessorKey: "email",
@@ -62,18 +80,44 @@ export const columns: ColumnDef<Customer>[] = [
     },
   },
   {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-
-      return <div className="text-right font-medium">{formatted}</div>;
+    accessorKey: "createdAt",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Created At
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
     },
   },
+  {
+    accessorKey: "status",
+    header: "Status",
+  },
+  {
+    accessorKey: "role",
+    header: "Role",
+  },
+  {
+    accessorKey: "subscriptionTier",
+    header: "Tier",
+  },
+  // {
+  //   accessorKey: "amount",
+  //   header: () => <div className="text-right">Amount</div>,
+  //   cell: ({ row }) => {
+  //     const amount = parseFloat(row.getValue("amount"));
+  //     const formatted = new Intl.NumberFormat("en-US", {
+  //       style: "currency",
+  //       currency: "USD",
+  //     }).format(amount);
+
+  //     return <div className="text-right font-medium">{formatted}</div>;
+  //   },
+  // },
   {
     id: "actions",
     cell: ({ row }) => {
