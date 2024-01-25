@@ -29,6 +29,8 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+import AddCustomer from "./addCustomer";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -102,7 +104,7 @@ export function DataTable<TData, TValue>({
                 })}
             </DropdownMenuContent>
           </DropdownMenu>{" "}
-          <Button>Add New</Button>
+          <AddCustomer />
         </div>
       </div>
       <div className="rounded-md border">
