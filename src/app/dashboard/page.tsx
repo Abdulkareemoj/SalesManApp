@@ -11,7 +11,7 @@ import { SessionAuth } from "supertokens-auth-react/recipe/session";
 
 import Analytics from "@/components/dashboard/analytics";
 import Overview from "@/components/dashboard/overview";
-import Report from "@/components/dashboard/report";
+import Tasks from "@/components/dashboard/tasks/tasks";
 import Notifications from "@/components/dashboard/notifications";
 
 const metadata: Metadata = {
@@ -44,7 +44,7 @@ export default function DashboardPage() {
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            <TabsTrigger value="reports">Reports</TabsTrigger>
+            <TabsTrigger value="tasks">Tasks</TabsTrigger>
             <TabsTrigger value="notifications">Notifications</TabsTrigger>
           </TabsList>
           <TabsContent value="overview" className="space-y-4">
@@ -53,8 +53,8 @@ export default function DashboardPage() {
           <TabsContent value="analytics">
             <Analytics />
           </TabsContent>
-          <TabsContent value="reports">
-            <Report />
+          <TabsContent value="tasks">
+            <Tasks />
           </TabsContent>
           <TabsContent value="notifications">
             <Notifications />
