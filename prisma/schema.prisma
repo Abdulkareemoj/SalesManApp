@@ -7,8 +7,71 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  name  String? @db.VarChar(255)
-  email String  @unique @db.VarChar(255)
+model Product {
+  id          String     @id @default(uuid())
+  productName String
+  description String
+  createdAt   DateTime   @default(now())
+  stock       Int
+  price       Int
+  status      userStatus @default(pending)
+  supplier    String
+}
+
+model Customer {
+  id               String               @id @default(uuid())
+  name             String
+  username         String               @unique
+  email            String               @unique
+  createdAt        DateTime             @default(now())
+  role             UserRole             @default(user)
+  status           userStatus           @default(pending)
+  subscriptionTier userSubscriptionTier @default(free)
+}
+
+model Task {
+  id        String         @id @default(uuid())
+  title     String
+  createdAt DateTime       @default(now())
+  status    taskStatus
+  label     taskLabel
+  priority  taskPriorities
+}
+
+enum UserRole {
+  user
+  admin
+}
+
+enum userStatus {
+  pending
+  processing
+  success
+  failed
+}
+
+enum userSubscriptionTier {
+  free
+  basic
+  business
+}
+
+enum taskLabel {
+  bug
+  feature
+  documentation
+}
+
+enum taskStatus {
+  backlog
+  todo
+  inProgress
+  done
+  cancelled
+}
+
+enum taskPriorities {
+  low
+  medium
+  high
 }
