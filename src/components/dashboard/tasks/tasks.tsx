@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { columns } from "./columns";
+// import { useEffect, useState } from "react";
+import { Task, columns } from "./columns";
 import { DataTable } from "./data-table";
 // import { UserNav } from "./components/user-nav";
 // import { taskSchema } from "./data/schema";
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 // Simulate a database read for tasks.
 async function getTasks(): Promise<Task[]> {
-  [
+  return [
     {
       id: "TASK-8782",
       title:
@@ -797,19 +797,19 @@ async function getTasks(): Promise<Task[]> {
     },
   ];
 }
-export default function TasksPage() {
-  const [tasks, setTasks] = useState<Task[]>([]);
+export default async function TasksPage() {
+  // const [tasks, setTasks] = useState<Task[]>([]);
 
-  useEffect(() => {
-    async function fetchData() {
-      // Fetch data from your API here.
-      const result: Task[] = await getTasks();
-      setTasks(result);
-    }
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     // Fetch data from your API here.
+  //     const result: Task[] = await getTasks();
+  //     setTasks(result);
+  //   }
 
-    fetchData();
-  }, []);
-
+  //   fetchData();
+  // }, []);
+  const data = await getTasks();
   return (
     <>
       <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
@@ -822,7 +822,7 @@ export default function TasksPage() {
           </div>
           <div className="flex items-center space-x-2">{/* <UserNav /> */}</div>
         </div>
-        <DataTable data={tasks} columns={columns} />
+        <DataTable data={data} columns={columns} />
       </div>
     </>
   );
