@@ -14,6 +14,15 @@ export type Task = {
   priority: string;
 };
 
+export function parseTask(data: any): Task {
+  return {
+    id: data.id,
+    title: data.title,
+    status: data.status,
+    label: data.label,
+    priority: data.priority,
+  };
+}
 export const columns: ColumnDef<Task>[] = [
   {
     id: "select",
