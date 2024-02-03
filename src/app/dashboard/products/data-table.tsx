@@ -29,6 +29,8 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { DataTablePagination } from "@/components/dashboard/tasks/data-table-pagination";
+
 import AddProduct from "./addProduct";
 
 interface DataTableProps<TData, TValue> {
@@ -67,7 +69,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div>
+    <div className="space-y-4">
       <div className="flex justify-between justify py-4">
         <Input
           placeholder="Filter Products..."
@@ -159,7 +161,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      {/* <div className="flex items-center justify-end space-x-2 py-4">
         <Button
           variant="outline"
           size="sm"
@@ -180,7 +182,8 @@ export function DataTable<TData, TValue>({
       <div className="flex-1 text-sm text-muted-foreground">
         {table.getFilteredSelectedRowModel().rows.length} of{" "}
         {table.getFilteredRowModel().rows.length} row(s) selected.
-      </div>
+      </div> */}
+      <DataTablePagination table={table} />
     </div>
   );
 }
