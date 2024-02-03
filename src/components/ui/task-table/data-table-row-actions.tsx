@@ -16,7 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { labels } from "./data";
+import { labels } from "../../dashboard/tasks/data";
 import { parseTask } from "./columns";
 
 interface DataTableRowActionsProps<TData> {

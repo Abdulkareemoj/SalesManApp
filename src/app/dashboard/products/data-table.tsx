@@ -29,7 +29,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { DataTablePagination } from "@/components/dashboard/tasks/data-table-pagination";
+import { DataTablePagination } from "@/components/ui/task-table/data-table-pagination";
 
 import AddProduct from "./addProduct";
 

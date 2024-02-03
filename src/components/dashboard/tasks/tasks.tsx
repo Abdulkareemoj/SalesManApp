@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 import Image from "next/image";
 // import { useEffect, useState } from "react";
-import { Task, columns } from "./columns";
-import { DataTable } from "./data-table";
+import { Task, columns } from "../../ui/task-table/columns";
+import { DataTable } from "../../ui/task-table/data-table";
 // import { UserNav } from "./components/user-nav";
 // import { taskSchema } from "./data/schema";
 
