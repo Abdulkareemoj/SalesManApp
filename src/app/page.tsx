@@ -8,6 +8,7 @@ export default function Home() {
         <title></title>
       </head>
       <body>
+        <a href="/dashboard">Go to Dashboard</a>
         <section className="text-gray-600 body-font overflow-hidden">
           <div className="container px-5 py-24 mx-auto">
             <div className="flex flex-wrap -m-12">
