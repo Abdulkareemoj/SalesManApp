@@ -68,7 +68,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex justify-between py-4">
+      <div className="flex justify-between justify py-4">
         <Input
           placeholder="Filter Products..."
           value={
@@ -79,7 +79,7 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
-        <div className="gap-5">
+        <div className="flex gap-5">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto">
@@ -105,7 +105,7 @@ export function DataTable<TData, TValue>({
                   );
                 })}
             </DropdownMenuContent>
-          </DropdownMenu>{" "}
+          </DropdownMenu>
           <AddProduct />
         </div>
       </div>

@@ -77,7 +77,7 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
-        <div className="gap-5">
+        <div className="flex gap-5">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto">
