@@ -37,6 +37,7 @@ const formSchema = z.object({
     .string()
     .min(5, { message: "Must be 5 or more characters long" }),
   stock: z.string().min(5, { message: "Must be 5 or more characters long" }),
+  category: z.string().min(5, { message: "Must be 5 or more characters long" }),
   price: z.string().min(5, { message: "Must be 5 or more characters long" }),
   status: z.string().min(5, { message: "Enter a Message" }),
   supplier: z.string().min(5, { message: "Enter a Message" }),
@@ -49,6 +50,7 @@ const AddProduct = () => {
       productname: "",
       description: "",
       stock: "",
+      category: "",
       price: "",
       status: "",
       supplier: "",
@@ -113,7 +115,7 @@ const AddProduct = () => {
                   <FormItem>
                     <FormLabel>Stock</FormLabel>
                     <FormControl>
-                      <Input placeholder="supplier" {...field} />
+                      <Input placeholder="stock" {...field} />
                     </FormControl>
 
                     <FormMessage />
@@ -164,6 +166,49 @@ const AddProduct = () => {
                 )}
               />
 
+              <FormField
+                control={form.control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormLabel>Category</FormLabel>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="select category" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="pending">electronics</SelectItem>
+                        <SelectItem value="processing">clothing</SelectItem>
+                        <SelectItem value="success">food</SelectItem>
+                        <SelectItem value="failed">books</SelectItem>
+                        <SelectItem value="failed">furniture</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Price</FormLabel>
+                    <FormControl>
+                      <Input placeholder="price" {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <DialogFooter>
                 <Button
                   type="submit"

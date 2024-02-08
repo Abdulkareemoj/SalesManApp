@@ -4,7 +4,15 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("POSTGRES_URL_NON_POOLING")
+}
+
+enum Category {
+  electronics
+  clothing
+  food
+  books
+  furniture
 }
 
 model Product {
@@ -16,6 +24,7 @@ model Product {
   price       Int
   status      userStatus @default(pending)
   supplier    String
+  category    Category
 }
 
 model Customer {
