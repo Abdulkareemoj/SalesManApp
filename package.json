@@ -5,6 +5,9 @@
     "build": "next build",
     "start": "next start"
   },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
     "@prisma/client": "^5.8.1",
@@ -47,14 +50,15 @@
     "tailwind-merge": "^2.0.0",
     "tailwindcss": "3.3.5",
     "tailwindcss-animate": "^1.0.7",
-    "typescript": "5.2.2",
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@types/node": "20.9.0",
+    "@types/node": "^20.9.0",
     "@types/react": "18.2.37",
     "@types/react-dom": "18.2.15",
     "encoding": "^0.1.13",
-    "prisma": "^5.8.1"
+    "prisma": "^5.8.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
   }
 }
