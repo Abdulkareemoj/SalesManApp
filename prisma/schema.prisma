@@ -68,7 +68,7 @@ enum taskStatus {
   todo
   in_progress
   done
-  canceled
+  cancelled
 }
 
 enum taskPriorities {

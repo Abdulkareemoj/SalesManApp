@@ -837,7 +837,7 @@ export const statuses = [
   },
   {
     value: "canceled",
-    label: "Canceled",
+    label: "Cancelled",
     icon: CrossCircledIcon,
   },
 ];
