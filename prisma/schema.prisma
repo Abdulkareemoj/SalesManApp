@@ -7,14 +7,6 @@ datasource db {
   url      = env("POSTGRES_URL_NON_POOLING")
 }
 
-enum Category {
-  electronics
-  clothing
-  food
-  books
-  furniture
-}
-
 model Product {
   id          String     @id @default(uuid())
   productName String
@@ -39,7 +31,7 @@ model Customer {
 }
 
 model Task {
-  id        String         @id @default(uuid())
+  id        String         @id
   title     String
   createdAt DateTime       @default(now())
   status    taskStatus
@@ -74,13 +66,21 @@ enum taskLabel {
 enum taskStatus {
   backlog
   todo
-  inProgress
+  in_progress
   done
-  cancelled
+  canceled
 }
 
 enum taskPriorities {
   low
   medium
   high
+}
+
+enum Category {
+  electronics
+  clothing
+  food
+  books
+  furniture
 }
