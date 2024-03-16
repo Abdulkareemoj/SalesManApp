@@ -9,6 +9,8 @@ import {
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { buttonVariants } from "@/components/ui/button";
+import { ProfileMenu } from "@/components/profile-menu";
+import { Search } from "@/components/search";
 
 type NavigationItem = {
   href: string;
@@ -48,6 +50,10 @@ export function MainNav({
           </Link>
         </div>
       ))}
+      <div className="ml-auto flex items-center space-x-4">
+        <Search placeholder="Search..." />
+        <ProfileMenu />
+      </div>
     </nav>
   );
 }

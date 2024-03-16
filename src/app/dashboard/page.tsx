@@ -4,9 +4,7 @@ import { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CalendarDateRangePicker } from "@/components/date-range-picker";
-import { Search } from "@/components/search";
-import TeamSwitcher from "@/components/team-switcher";
-import { ProfileMenu } from "@/components/profile-menu";
+// import TeamSwitcher from "@/components/team-switcher";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
 
 import Analytics from "@/components/dashboard/analytics";
@@ -24,12 +22,8 @@ export default function DashboardPage() {
     // <SessionAuth>
     <div className="hidden flex-col md:flex">
       <div className="border-b">
-        <div className="flex h-16 items-center px-4">
-          <TeamSwitcher />
-          <div className="ml-auto flex items-center space-x-4">
-            <Search placeholder="Search..." />
-            <ProfileMenu />
-          </div>
+        <div className="flex h-4  items-center px-4">
+          {/* <TeamSwitcher /> */}
         </div>
       </div>
       <div className="flex-1 space-y-4 p-8 pt-6">
