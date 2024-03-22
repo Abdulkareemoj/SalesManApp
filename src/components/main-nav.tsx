@@ -31,30 +31,37 @@ export function MainNav({
 }: React.HTMLAttributes<HTMLElement>) {
   const pathname = usePathname();
   return (
-    <nav
-      className={cn(" flex relative justify-start gap-2", className)}
-      {...props}
-    >
-      {navigation.map(({ href, icon: Icon, name }) => (
-        <div key={href}>
-          <Link
-            href={href}
-            className={cn(
-              buttonVariants({ variant: "ghost" }),
-              pathname === href ? "bg-black text-white dark:bg-white" : "",
-              "justify-start"
-            )}
-          >
-            <Icon />
-            <span className="	px-2">{name}</span>
-          </Link>
+    <>
+      <nav
+        className={cn(" flex relative justify-start gap-2", className)}
+        {...props}
+      >
+        {navigation.map(({ href, icon: Icon, name }) => (
+          <div key={href}>
+            <Link
+              href={href}
+              className={cn(
+                buttonVariants({ variant: "ghost" }),
+                pathname === href ? "bg-black text-white dark:bg-white" : "",
+                "justify-start"
+              )}
+            >
+              <Icon />
+              <span className="	px-2">{name}</span>
+            </Link>
+          </div>
+        ))}
+        <div className="ml-auto flex items-center space-x-4">
+          <Search placeholder="Search..." />
+          <ProfileMenu />
         </div>
-      ))}
-      <div className="ml-auto flex items-center space-x-4">
-        <Search placeholder="Search..." />
-        <ProfileMenu />
+      </nav>
+      <div className="border-b">
+        <div className="flex h-4  items-center px-4">
+          {/* <TeamSwitcher /> */}
+        </div>
       </div>
-    </nav>
+    </>
   );
 }
 
