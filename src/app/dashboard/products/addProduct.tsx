@@ -83,11 +83,12 @@ const AddProduct = () => {
                 name="productname"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Product Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="productname" {...field} />
-                    </FormControl>
-
+                    <div className="flex flex-column ">
+                      <FormLabel>Product Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="productname" {...field} />
+                      </FormControl>
+                    </div>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -98,10 +99,12 @@ const AddProduct = () => {
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Input placeholder="description" {...field} />
-                    </FormControl>
+                    <div className="flex flex-column ">
+                      <FormLabel>Description</FormLabel>
+                      <FormControl>
+                        <Input placeholder="description" {...field} />
+                      </FormControl>
+                    </div>
 
                     <FormMessage />
                   </FormItem>
@@ -113,10 +116,12 @@ const AddProduct = () => {
                 name="stock"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Stock</FormLabel>
-                    <FormControl>
-                      <Input placeholder="stock" {...field} />
-                    </FormControl>
+                    <div className="flex flex-column ">
+                      <FormLabel>Stock</FormLabel>
+                      <FormControl>
+                        <Input placeholder="stock" {...field} />
+                      </FormControl>
+                    </div>
 
                     <FormMessage />
                   </FormItem>
@@ -128,23 +133,26 @@ const AddProduct = () => {
                 name="status"
                 render={({ field }) => (
                   <FormItem>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormLabel>Status</FormLabel>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="select status" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="pending">pending</SelectItem>
-                        <SelectItem value="processing">processing</SelectItem>
-                        <SelectItem value="success">success</SelectItem>
-                        <SelectItem value="failed">failed</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <div className="flex flex-column ">
+                      {" "}
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormLabel>Status</FormLabel>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="select status" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="pending">pending</SelectItem>
+                          <SelectItem value="processing">processing</SelectItem>
+                          <SelectItem value="success">success</SelectItem>
+                          <SelectItem value="failed">failed</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
 
                     <FormMessage />
                   </FormItem>
@@ -156,10 +164,12 @@ const AddProduct = () => {
                 name="supplier"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Supplier</FormLabel>
-                    <FormControl>
-                      <Input placeholder="stock" {...field} />
-                    </FormControl>
+                    <div className="flex flex-column ">
+                      <FormLabel>Supplier</FormLabel>
+                      <FormControl>
+                        <Input placeholder="stock" {...field} />
+                      </FormControl>
+                    </div>
 
                     <FormMessage />
                   </FormItem>
@@ -171,24 +181,26 @@ const AddProduct = () => {
                 name="category"
                 render={({ field }) => (
                   <FormItem>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormLabel>Category</FormLabel>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="select category" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="pending">electronics</SelectItem>
-                        <SelectItem value="processing">clothing</SelectItem>
-                        <SelectItem value="success">food</SelectItem>
-                        <SelectItem value="failed">books</SelectItem>
-                        <SelectItem value="failed">furniture</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <div className="flex justify-around">
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormLabel>Category</FormLabel>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="select category" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="pending">electronics</SelectItem>
+                          <SelectItem value="processing">clothing</SelectItem>
+                          <SelectItem value="success">food</SelectItem>
+                          <SelectItem value="failed">books</SelectItem>
+                          <SelectItem value="failed">furniture</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
 
                     <FormMessage />
                   </FormItem>
@@ -200,10 +212,12 @@ const AddProduct = () => {
                 name="price"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Price</FormLabel>
-                    <FormControl>
-                      <Input placeholder="price" {...field} />
-                    </FormControl>
+                    <div className="flex flex-column ">
+                      <FormLabel>Price</FormLabel>
+                      <FormControl>
+                        <Input placeholder="price" {...field} />
+                      </FormControl>
+                    </div>
 
                     <FormMessage />
                   </FormItem>
