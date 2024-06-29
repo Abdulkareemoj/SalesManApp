@@ -1,6 +1,5 @@
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
-import { SuperTokensProvider } from "../components/supertokensProvider";
 import { Toaster } from "@/components/ui/toaster";
 
 const defaultUrl = process.env.VERCEL_URL
@@ -21,9 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={GeistSans.className}>
       <body className="bg-background text-foreground">
-        <SuperTokensProvider>
-          <main>{children}</main> <Toaster />
-        </SuperTokensProvider>
+        <main>{children}</main> <Toaster />
       </body>
     </html>
   );
