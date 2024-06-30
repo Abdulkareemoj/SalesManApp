@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/icons";
 import { useState } from "react";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
@@ -18,7 +18,13 @@ type LoadingStates = {
 };
 export default function SignIn() {
   const router = useRouter();
-  const supabase = createClient();
+  const supabaseUrl = process.env.SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error("SUPABASE_URL and SUPABASE_ANON_KEY must be set");
+  }
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
   const [loadingStates, setLoading] = useState<LoadingStates>({
     isLoadingGoogle: false,
