@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CalendarDateRangePicker } from "@/components/date-range-picker";
 // import TeamSwitcher from "@/components/team-switcher";
-import { SessionAuth } from "supertokens-auth-react/recipe/session";
 
 import Analytics from "@/components/dashboard/analytics";
 import Overview from "@/components/dashboard/overview";
@@ -19,7 +18,6 @@ const metadata: Metadata = {
 
 export default function DashboardPage() {
   return (
-    // <SessionAuth>
     <div className="hidden flex-col md:flex">
       <div className="flex-1 space-y-4 p-8 pt-6">
         <div className="flex items-center justify-between space-y-2">
@@ -51,6 +49,5 @@ export default function DashboardPage() {
         </Tabs>
       </div>
     </div>
-    // </SessionAuth>
   );
 }
