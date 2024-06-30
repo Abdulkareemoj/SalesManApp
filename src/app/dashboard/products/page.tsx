@@ -8,11 +8,13 @@ import { createClient } from "@supabase/supabase-js";
 import { Icons } from "@/components/ui/icons";
 import { useQuery } from "@supabase-cache-helpers/postgrest-swr";
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_ANON_KEY;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
-  throw new Error("SUPABASE_URL and SUPABASE_ANON_KEY must be set");
+  throw new Error(
+    "NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY must be set"
+  );
 }
 
 const client = createClient(supabaseUrl, supabaseKey);
