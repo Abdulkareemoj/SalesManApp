@@ -4,20 +4,11 @@ import { DataTable } from "./data-table";
 import { Button } from "@/components/ui/button";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@/utils/supabase/client";
 import { Icons } from "@/components/ui/icons";
 import { useQuery } from "@supabase-cache-helpers/postgrest-swr";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-if (!supabaseUrl || !supabaseKey) {
-  throw new Error(
-    "NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY must be set"
-  );
-}
-
-const client = createClient(supabaseUrl, supabaseKey);
+const client = createClient();
 export default function ProductsPage() {
   const { toast } = useToast();
   const { data, error } = useQuery(
