@@ -1,9 +1,10 @@
 "use client";
 import { useQuery } from "@supabase-cache-helpers/postgrest-swr";
-import { Customer, columns } from "./columns";
+import { columns } from "./columns";
 import { DataTable } from "./data-table";
 
 import { createClient } from "@supabase/supabase-js";
+import { Icons } from "@/components/ui/icons";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -28,7 +29,12 @@ export default function CustomersPage() {
   console.log("Error:", error);
 
   if (error) return <div>Error: {error.message}</div>;
-  if (!data) return <div>Loading...</div>;
+  if (!data)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        Loading <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+      </div>
+    );
 
   return (
     <div className="m-6">
