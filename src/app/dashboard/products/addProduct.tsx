@@ -30,6 +30,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 import { useInsertMutation } from "@supabase-cache-helpers/postgrest-swr";
 import { createClient } from "@/utils/supabase/client";
+
 const client = createClient();
 type FormData = z.infer<typeof formSchema>;
 
@@ -49,7 +50,7 @@ const formSchema = z.object({
 export default function AddProduct() {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      await insert(data);
+      await insert([data]);
       toast({
         title: "Product added successfully.",
       });
@@ -73,17 +74,7 @@ export default function AddProduct() {
     },
   });
 
-  const { trigger: insert } = useInsertMutation(
-    client.from("Product"),
-    ["id"],
-    "productname",
-    "description",
-    "stock",
-    "category",
-    "price",
-    "status",
-    "supplier"
-  );
+  const { trigger: insert } = useInsertMutation(client.from("Product"), ["id"]);
 
   return (
     <main>
