@@ -24,10 +24,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useToast } from "@/components/ui/use-toast";
+import { toast, useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
+import { useInsertMutation } from "@supabase-cache-helpers/postgrest-swr";
+import { createClient } from "@/utils/supabase/client";
+const client = createClient();
+type FormData = z.infer<typeof formSchema>;
 
 const formSchema = z.object({
   productname: z
@@ -42,8 +46,20 @@ const formSchema = z.object({
   status: z.string().min(5, { message: "Enter a Message" }),
   supplier: z.string().min(5, { message: "Enter a Message" }),
 });
-
-const AddProduct = () => {
+export default function AddProduct() {
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    try {
+      await insert(data);
+      toast({
+        title: "Product added successfully.",
+      });
+    } catch (error) {
+      toast({
+        title: "Failed to add product.",
+      });
+    }
+  };
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -56,12 +72,19 @@ const AddProduct = () => {
       supplier: "",
     },
   });
-  const { toast } = useToast();
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+
+  const { trigger: insert } = useInsertMutation(
+    client.from("Product"),
+    ["id"],
+    "productname",
+    "description",
+    "stock",
+    "category",
+    "price",
+    "status",
+    "supplier"
+  );
+
   return (
     <main>
       <Form {...form}>
@@ -228,6 +251,4 @@ const AddProduct = () => {
       </Form>
     </main>
   );
-};
-
-export default AddProduct;
+}
