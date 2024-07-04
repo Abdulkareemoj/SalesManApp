@@ -6,10 +6,9 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/icons";
-import { useState } from "react";
-import { createClient } from "@supabase/supabase-js";
+import { useEffect, useState } from "react";
+import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import { cn } from "@/lib/utils";
 
 type LoadingStates = {
   isLoadingEmail?: boolean;
@@ -17,14 +16,15 @@ type LoadingStates = {
   isLoadingDiscord?: boolean;
 };
 export default function SignIn() {
+  const client = createClient();
   const router = useRouter();
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_ANON_KEY;
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  if (!supabaseUrl || !supabaseKey) {
-    throw new Error("SUPABASE_URL and SUPABASE_ANON_KEY must be set");
-  }
-  const supabase = createClient(supabaseUrl, supabaseKey);
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/dashboard");
+    }
+  }, [isAuthenticated]);
 
   const [loadingStates, setLoading] = useState<LoadingStates>({
     isLoadingGoogle: false,
@@ -37,7 +37,7 @@ export default function SignIn() {
       ...prev,
       ...obj,
     }));
-    // After 5 seconds, set all loading states back to false
+    // After 3 seconds, set all loading states back to false
     setTimeout(() => {
       setLoading({
         isLoadingGoogle: false,
@@ -65,34 +65,40 @@ export default function SignIn() {
     const email = target.email.value;
     const password = target.password.value;
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error } = await client.auth.signInWithPassword({
       email: email,
       password: password,
     });
 
     if (error) {
       console.log("Login successful");
-      void router.push("/dashboard");
-    } else {
-      console.log("Login failed");
+      if (!error) {
+        setIsAuthenticated(true); // Update state to indicate successful authentication
+      } else {
+        console.log("Login failed");
+      }
     }
   }
-
   // Social login functions
   async function signInWithGoogle() {
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { error } = await client.auth.signInWithOAuth({
       provider: "google",
     });
-    void router.push("/dashboard");
-    if (error) console.error("Google login failed", error.message);
+    if (!error) {
+      setIsAuthenticated(true); // Update state to indicate successful authentication
+    } else {
+      if (error) console.error("Google login failed", error.message);
+    }
   }
-
-  async function signInWithDiscord() {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "discord",
+  async function signInWithGithub() {
+    const { error } = await client.auth.signInWithOAuth({
+      provider: "github",
     });
-    void router.push("/dashboard");
-    if (error) console.error("Discord login failed", error.message);
+    if (!error) {
+      setIsAuthenticated(true); // Update state to indicate successful authentication
+    } else {
+      if (error) console.error("Discord login failed", error.message);
+    }
   }
 
   return (
@@ -167,7 +173,7 @@ export default function SignIn() {
                 type="button"
                 onClick={() => {
                   setLoadingState({ isLoadingGoogle: true });
-                  signInWithGoogle;
+                  signInWithGoogle();
                 }}
                 disabled={isAnyLoading()}
               >
@@ -184,7 +190,7 @@ export default function SignIn() {
                 type="button"
                 onClick={() => {
                   setLoadingState({ isLoadingDiscord: true });
-                  signInWithDiscord;
+                  signInWithGithub();
                 }}
                 disabled={isAnyLoading()}
               >
