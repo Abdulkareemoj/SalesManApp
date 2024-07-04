@@ -8,9 +8,11 @@ import {
 } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ProfileMenu } from "@/components/profile-menu";
 import { Search } from "@/components/search";
+import { Menu } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 
 type NavigationItem = {
   href: string;
@@ -32,98 +34,73 @@ export function MainNav({
   const pathname = usePathname();
   return (
     <>
-      <nav
-        className={cn(" flex relative justify-start gap-2", className)}
-        {...props}
-      >
-        {navigation.map(({ href, icon: Icon, name }) => (
-          <div key={href}>
-            <Link
-              href={href}
-              className={cn(
-                buttonVariants({ variant: "ghost" }),
-                pathname === href ? "bg-black text-white dark:bg-white" : "",
-                "justify-start"
-              )}
-            >
-              <Icon />
-              <span className="	px-2">{name}</span>
-            </Link>
+      <header className="bg-background sticky top-0 flex h-16 items-center gap-4 border-b px-4 md:px-6">
+        <nav
+          className={cn(
+            "hidden md:flex justify-between w-full flex-col gap-6 text-lg font-medium md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6",
+            className
+          )}
+          {...props}
+        >
+          <div className="flex flex-col md:flex-row md:items-center">
+            {navigation.map(({ href, icon: Icon, name }) => (
+              <div key={href} className="flex">
+                <Link
+                  href={href}
+                  className={cn(
+                    buttonVariants({ variant: "ghost" }),
+                    pathname === href
+                      ? "bg-black text-white dark:bg-white"
+                      : "",
+                    "justify-start"
+                  )}
+                >
+                  <Icon />
+                  <span className="px-2">{name}</span>
+                </Link>
+              </div>
+            ))}
           </div>
-        ))}
-        <div className="ml-auto flex items-center space-x-4">
-          <Search placeholder="Search..." />
-          <ProfileMenu />
-        </div>
-      </nav>
-      <div className="border-b">
-        <div className="flex h-4  items-center px-4">
-          {/* <TeamSwitcher /> */}
-        </div>
-      </div>
+          <div className="ml-auto flex items-center space-x-4">
+            <Search placeholder="Search..." />
+            <ProfileMenu />
+          </div>
+        </nav>
+
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button
+              variant="outline"
+              size="icon"
+              className="shrink-0 md:hidden"
+            >
+              <Menu className="h-5 w-5" />
+              <span className="sr-only">Toggle navigation menu</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left">
+            <nav className="grid gap-6 text-lg font-medium">
+              {navigation.map(({ href, icon: Icon, name }) => (
+                <div key={href}>
+                  <Link
+                    href={href}
+                    className={cn(
+                      buttonVariants({ variant: "ghost" }),
+                      pathname === href
+                        ? "bg-black text-white dark:bg-white"
+                        : "",
+                      "justify-start"
+                    )}
+                  >
+                    <Icon />
+                    <span className="	px-2">{name}</span>
+                  </Link>
+                </div>
+              ))}
+            </nav>
+          </SheetContent>
+        </Sheet>
+      </header>
     </>
   );
 }
-
-// import {
-//   Avatar,
-//   AvatarFallback,
-//   AvatarImage,
-// } from "@/registry/new-york/ui/avatar"
-// import { Button } from "@/registry/new-york/ui/button"
-// import {
-//   DropdownMenu,
-//   DropdownMenuContent,
-//   DropdownMenuGroup,
-//   DropdownMenuItem,
-//   DropdownMenuLabel,
-//   DropdownMenuSeparator,
-//   DropdownMenuShortcut,
-//   DropdownMenuTrigger,
-// } from "@/registry/new-york/ui/dropdown-menu"
-
-// export function UserNav() {
-//   return (
-//     <DropdownMenu>
-//       <DropdownMenuTrigger asChild>
-//         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-//           <Avatar className="h-9 w-9">
-//             <AvatarImage src="/avatars/03.png" alt="@shadcn" />
-//             <AvatarFallback>SC</AvatarFallback>
-//           </Avatar>
-//         </Button>
-//       </DropdownMenuTrigger>
-//       <DropdownMenuContent className="w-56" align="end" forceMount>
-//         <DropdownMenuLabel className="font-normal">
-//           <div className="flex flex-col space-y-1">
-//             <p className="text-sm font-medium leading-none">shadcn</p>
-//             <p className="text-xs leading-none text-muted-foreground">
-//               m@example.com
-//             </p>
-//           </div>
-//         </DropdownMenuLabel>
-//         <DropdownMenuSeparator />
-//         <DropdownMenuGroup>
-//           <DropdownMenuItem>
-//             Profile
-//             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-//           </DropdownMenuItem>
-//           <DropdownMenuItem>
-//             Billing
-//             <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-//           </DropdownMenuItem>
-//           <DropdownMenuItem>
-//             Settings
-//             <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-//           </DropdownMenuItem>
-//           <DropdownMenuItem>New Team</DropdownMenuItem>
-//         </DropdownMenuGroup>
-//         <DropdownMenuSeparator />
-//         <DropdownMenuItem>
-//           Log out
-//           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-//         </DropdownMenuItem>
-//       </DropdownMenuContent>
-//     </DropdownMenu>
-//   )
-// }
