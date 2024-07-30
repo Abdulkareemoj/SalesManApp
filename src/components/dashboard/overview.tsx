@@ -7,7 +7,7 @@ import {
   CardDescription,
 } from "../ui/card";
 
-import { Charts } from "../charts";
+import { Charts } from "../charts/charts";
 const Overview = () => {
   return (
     <>
@@ -117,7 +117,7 @@ const Overview = () => {
             <Charts />
           </CardContent>
         </Card>
-        <Card className="col-span-3">
+        <Card className="col-span-4">
           <CardHeader>
             <CardTitle>Recent Sales</CardTitle>
             <CardDescription>You made 265 sales this month.</CardDescription>
