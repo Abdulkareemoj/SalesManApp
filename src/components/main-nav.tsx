@@ -34,7 +34,7 @@ export function MainNav({
   const pathname = usePathname();
   return (
     <>
-      <header className="bg-background sticky top-0 flex h-16 items-center gap-4 border-b px-4 md:px-6">
+      <header className="bg-background/70 backdrop-blur sticky top-0 z-50 flex h-16 items-center gap-4 border-b px-4 md:px-6">
         <nav
           className={cn(
             "hidden md:flex justify-between w-full flex-col gap-6 text-lg font-medium md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6",
@@ -93,7 +93,7 @@ export function MainNav({
                     )}
                   >
                     <Icon />
-                    <span className="	px-2">{name}</span>
+                    <span className="px-2">{name}</span>
                   </Link>
                 </div>
               ))}
