@@ -41,40 +41,44 @@ const formSchema = z.object({
   description: z
     .string()
     .min(5, { message: "Must be 5 or more characters long" }),
-  stock: z.string().min(5, { message: "Must be 5 or more characters long" }),
-  category: z.string().min(5, { message: "Must be 5 or more characters long" }),
-  price: z.string().min(5, { message: "Must be 5 or more characters long" }),
-  status: z.string().min(5, { message: "Enter a Message" }),
-  supplier: z.string().min(5, { message: "Enter a Message" }),
+  stock: z.number().min(1, { message: "Must be a positive number" }),
+  category: z.enum(["electronics", "clothing", "food", "books", "furniture"]),
+  price: z.number().min(0, { message: "Must be a non-negative number" }),
+  status: z.enum(["pending", "processing", "success", "failed"]),
+  supplier: z.string().min(5, { message: "Must be 5 or more characters long" }),
 });
+
 export default function AddProduct() {
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
-    try {
-      await insert([data]);
-      toast({
-        title: "Product added successfully.",
-      });
-    } catch (error) {
-      toast({
-        title: "Failed to add product.",
-      });
-    }
-  };
   const { toast } = useToast();
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       productname: "",
       description: "",
-      stock: "",
-      category: "",
-      price: "",
-      status: "",
+      stock: 0,
+      category: "electronics",
+      price: 0,
+      status: "pending",
       supplier: "",
     },
   });
 
   const { trigger: insert } = useInsertMutation(client.from("Product"), ["id"]);
+
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    try {
+      console.log("Submitting data:", data); // Debugging log
+      await insert([data]);
+      toast({
+        title: "Product added successfully.",
+      });
+    } catch (error) {
+      console.error("Error adding product:", error); // Debugging log
+      toast({
+        title: "Failed to add product.",
+      });
+    }
+  };
 
   return (
     <main>
