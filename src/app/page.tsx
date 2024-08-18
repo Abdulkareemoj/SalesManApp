@@ -1,9 +1,12 @@
+"use client";
 import Link from "next/link";
-import { Button, buttonVariants } from "@/components/ui/button";
 import { JSX, SVGProps } from "react";
 import { cn } from "@/lib/utils";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function LandingPage() {
+  const router = useRouter();
   return (
     <div className="flex min-h-[100dvh] flex-col bg-primary">
       <header className="flex items-center justify-between px-6 py-4">
@@ -18,7 +21,7 @@ export default function LandingPage() {
         <Link
           href="/signin"
           className={cn(
-            buttonVariants({ variant: "ghost" }),
+            buttonVariants({ variant: "outline" }),
             "absolute right-4 top-4 md:right-8 md:top-8"
           )}
         >
@@ -31,12 +34,16 @@ export default function LandingPage() {
         </h1>
         <p className="mt-6 max-w-xl text-lg text-primary-foreground/90">
           Experience the ultimate platform for Building and Managing your web
-          applications. Don't worry, i just put this page for the fun of it,
-          nothing serious here i just wanted something to show before the auth
-          page. Enjoy!
+          applications. Don't worry, added put this page for fun nothing
+          serious, just wanted something to show before the auth page. Enjoy!
         </p>
         <div className="mt-10">
-          <Button className="rounded-full px-8 py-3 text-sm font-medium">
+          <Button
+            className="rounded-full px-8 py-3 text-sm font-medium"
+            //    onClick={
+            //   router.push("/dashboard");
+            // }
+          >
             Get Started
           </Button>
         </div>
