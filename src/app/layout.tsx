@@ -2,7 +2,6 @@ import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { type Metadata } from "next";
-import Head from "next/head";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -21,10 +20,8 @@ export default function RootLayout({
 }) {
   return (
     <>
-      <Head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
+      <meta charSet="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
       <html lang="en" className={GeistSans.className}>
         <body className="bg-background text-foreground">
           <main>{children}</main>
