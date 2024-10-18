@@ -14,9 +14,10 @@ export const config = {
      * - favicon.ico (favicon file)
      * - /signin (sign-in page)
      * - /forgot-password (forgot password page)
+     * - / (Landing page)
      * Feel free to modify this pattern to include more paths.
      */
     "/dashboard",
-    "/((?!_next/static|_next/image|favicon.ico|signin|forgot-password|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|signin|forgot-password|$).*)",
   ],
 };
