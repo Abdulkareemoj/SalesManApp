@@ -19,7 +19,7 @@ export async function loginWithPassword(formData: FormData) {
     redirect("/error");
   }
 
-  revalidatePath("/", "layout");
+  revalidatePath("/");
   redirect("/dashboard");
 }
 
@@ -28,6 +28,9 @@ export async function loginWithGoogle() {
 
   const { error } = await supabase.auth.signInWithOAuth({
     provider: "google",
+    options: {
+      redirectTo: "http://localhost:3000/callback",
+    },
   });
 
   if (error) {
@@ -35,7 +38,7 @@ export async function loginWithGoogle() {
     redirect("/error");
   }
 
-  revalidatePath("/", "layout");
+  revalidatePath("/");
   redirect("/dashboard");
 }
 
@@ -44,6 +47,9 @@ export async function loginWithGithub() {
 
   const { error } = await supabase.auth.signInWithOAuth({
     provider: "github",
+    options: {
+      redirectTo: "http://localhost:3000/callback",
+    },
   });
 
   if (error) {
@@ -51,7 +57,7 @@ export async function loginWithGithub() {
     redirect("/error");
   }
 
-  revalidatePath("/", "layout");
+  revalidatePath("/");
   redirect("/dashboard");
 }
 
@@ -70,7 +76,7 @@ export async function signup(formData: FormData) {
     redirect("/error");
   }
 
-  revalidatePath("/", "layout");
+  revalidatePath("/");
   redirect("/dashboard");
 }
 
@@ -84,5 +90,20 @@ export async function forgotPassword(email: string) {
     redirect("/error");
   } else {
     console.log("Password reset email sent successfully");
+  }
+}
+
+export async function changePassword(newPassword: string) {
+  const supabase = createClient();
+
+  const { error } = await supabase.auth.updateUser({
+    password: newPassword,
+  });
+
+  if (error) {
+    console.error("Password change failed", error);
+    throw new Error("Password change failed");
+  } else {
+    console.log("Password changed successfully");
   }
 }
