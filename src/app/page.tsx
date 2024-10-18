@@ -34,8 +34,8 @@ export default function LandingPage() {
         </h1>
         <p className="mt-6 max-w-xl text-lg text-primary-foreground/90">
           Experience the ultimate platform for Building and Managing your web
-          applications. Don't worry, added put this page for fun nothing
-          serious, just wanted something to show before the auth page. Enjoy!
+          applications. Landing Page, nothing serious,move along to the auth
+          page.
         </p>
         <div className="mt-10">
           <Button
