@@ -44,7 +44,7 @@ export async function updateSession(request: NextRequest) {
   ) {
     // no user, potentially respond by redirecting the user to the signin page
     const url = request.nextUrl.clone();
-    url.pathname = "/signin";
+    url.pathname = "/auth/signin";
     return NextResponse.redirect(url);
   }
 
