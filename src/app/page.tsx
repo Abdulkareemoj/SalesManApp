@@ -19,7 +19,7 @@ export default function LandingPage() {
           <span className="text-lg font-semibold">Acme Inc</span>
         </Link>
         <Link
-          href="/signin"
+          href="/auth/signin"
           className={cn(
             buttonVariants({ variant: "outline" }),
             "absolute right-4 top-4 md:right-8 md:top-8"
@@ -34,8 +34,7 @@ export default function LandingPage() {
         </h1>
         <p className="mt-6 max-w-xl text-lg text-primary-foreground/90">
           Experience the ultimate platform for Building and Managing your web
-          applications. Don't worry, added put this page for fun nothing
-          serious, just wanted something to show before the auth page. Enjoy!
+          applications. Enjoy!
         </p>
         <div className="mt-10">
           <Button
