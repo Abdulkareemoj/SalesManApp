@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -13,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/icons";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 type LoadingStates = {
   isLoadingEmail: boolean;
@@ -27,6 +27,7 @@ export default function LoginPage() {
     isLoadingGoogle: false,
     isLoadingGithub: false,
   });
+  const [error, setError] = useState<string | null>(null);
 
   const setLoadingState = (obj: Partial<LoadingStates>) => {
     setLoading((prev) => ({ ...prev, ...obj }));
@@ -53,35 +54,42 @@ export default function LoginPage() {
       router.push("/dashboard");
     } catch (error) {
       console.error("Login failed", error);
+      setError("Invalid login credentials. Please try again.");
     }
 
     setLoadingState({ isLoadingEmail: false });
   };
 
   const handleGoogleSignIn = async () => {
+    setError(null);
     setLoadingState({ isLoadingGoogle: true });
     try {
       await loginWithGoogle();
       router.push("/dashboard");
     } catch (error) {
       console.error("Google login failed", error);
+      setError("Google login failed. Please try again.");
+    } finally {
+      setLoadingState({ isLoadingGoogle: false });
     }
-    setLoadingState({ isLoadingGoogle: false });
   };
 
   const handleGithubSignIn = async () => {
+    setError(null);
     setLoadingState({ isLoadingGithub: true });
     try {
       await loginWithGithub();
       router.push("/dashboard");
     } catch (error) {
       console.error("GitHub login failed", error);
+      setError("GitHub login failed. Please try again.");
+    } finally {
+      setLoadingState({ isLoadingGithub: false });
     }
-    setLoadingState({ isLoadingGithub: false });
   };
 
   return (
-    <div className="container relative min-h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+    <div className="container relative min-h-screen flex flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
       <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
         <div className="absolute inset-0 bg-zinc-900" />
         <div className="relative z-20 flex items-center text-lg font-medium">
@@ -111,7 +119,7 @@ export default function LoginPage() {
         </div>
       </div>
       <div className="lg:p-8">
-        <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px] pt-12 px-4">
+        <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <div className="flex flex-col space-y-2 text-center">
             <h1 className="text-2xl font-semibold tracking-tight">
               Login to your account
@@ -120,6 +128,11 @@ export default function LoginPage() {
               Enter your email below to login to your account
             </p>
           </div>
+          {error && (
+            <Alert variant="destructive">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
