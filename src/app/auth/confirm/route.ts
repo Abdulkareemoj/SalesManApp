@@ -15,22 +15,31 @@ export async function GET(request: NextRequest) {
   if (token_hash && type) {
     const supabase = createClient();
 
-    const { error } = await supabase.auth.verifyOtp({
+    const { error, data } = await supabase.auth.verifyOtp({
       type,
       token_hash,
     });
 
     if (error) {
       console.error("OTP verification error:", error);
-    }
-
-    if (!error) {
-      const redirectTo = new URL(next, request.url);
-      console.log("Redirecting to:", redirectTo);
+      const redirectTo = new URL("/error", request.url);
       return NextResponse.redirect(redirectTo);
     }
-  }
 
+    console.log("OTP verification data:", data);
+
+    if (data.session) {
+      console.log("Session established:", data.session);
+      const redirectTo = new URL(next, request.url);
+      console.log("Redirecting to:", redirectTo);
+      // Pass the session token as a query parameter
+      redirectTo.searchParams.set("access_token", data.session.access_token);
+      redirectTo.searchParams.set("refresh_token", data.session.refresh_token);
+      return NextResponse.redirect(redirectTo);
+    } else {
+      console.log("No session found in OTP verification data.");
+    }
+  }
   // return the user to an error page with some instructions
   const redirectTo = new URL("/error", request.url);
   console.log("Redirecting to error page:", redirectTo);
