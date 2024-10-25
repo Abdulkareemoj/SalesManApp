@@ -14,13 +14,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { logout } from "@/app/auth/actions";
+import { useRouter } from 'next/navigation'
 
 export default function ProfileMenu() {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<any>(null);
   const supabase = createClient();
-
+  const router = useRouter()
   const fetchUser = async () => {
     const {
       data: { user },
@@ -111,7 +111,13 @@ export default function ProfileMenu() {
           <DropdownMenuItem>New Team</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onSelect={logout}>Log out</DropdownMenuItem>
+       <DropdownMenuItem onSelect={async () => {
+          await supabase.auth.signOut()
+          setUser(null)
+          router.push('/signin')
+        }}>
+          Log out
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
