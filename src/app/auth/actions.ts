@@ -3,7 +3,6 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
-import { revalidatePath } from 'next/cache'
 import { type NextRequest, NextResponse } from 'next/server'
 
 export async function loginWithPassword({
@@ -124,7 +123,7 @@ export async function changePassword(
 }
 
 
-export async function logout() {
+export async function logout(req: NextRequest) {
   const supabase = createClient()
 
   // Check if a user's logged in
