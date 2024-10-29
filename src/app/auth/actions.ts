@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
-import { type NextRequest, NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from "next/server";
 
 export async function loginWithPassword({
   email,
@@ -24,15 +24,14 @@ export async function loginWithPassword({
   revalidatePath("/");
   redirect("/dashboard");
 }
-
 export async function loginWithGoogle() {
   const supabase = createClient();
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
-    // options: {
-    //   redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
-    // },
+    options: {
+      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+    },
   });
 
   if (error) {
@@ -41,7 +40,7 @@ export async function loginWithGoogle() {
   }
 
   if (data?.url) {
-    redirect(data.url);
+    return { url: data.url };
   }
 
   return { error: null };
@@ -63,7 +62,7 @@ export async function loginWithGithub() {
   }
 
   if (data?.url) {
-    redirect(data.url);
+    return { url: data.url };
   }
 
   return { error: null };
@@ -122,21 +121,20 @@ export async function changePassword(
   return { error: null };
 }
 
-
 export async function logout(req: NextRequest) {
-  const supabase = createClient()
+  const supabase = createClient();
 
   // Check if a user's logged in
   const {
     data: { user },
-  } = await supabase.auth.getUser()
+  } = await supabase.auth.getUser();
 
   if (user) {
-    await supabase.auth.signOut()
+    await supabase.auth.signOut();
   }
 
-  revalidatePath('/', )
-  return NextResponse.redirect(new URL('/', req.url), {
+  revalidatePath("/");
+  return NextResponse.redirect(new URL("/", req.url), {
     status: 302,
-  })
+  });
 }

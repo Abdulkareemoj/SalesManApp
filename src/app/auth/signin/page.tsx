@@ -60,9 +60,12 @@ export default function LoginPage() {
     setErrorMessage(null);
     setLoadingState({ isLoadingGoogle: true });
     try {
-      const { error } = await loginWithGoogle();
+      const { url, error } = await loginWithGoogle();
       if (error) {
         throw new Error(error);
+      }
+      if (url) {
+        window.location.href = url; // Redirect to the OAuth provider
       }
       // No need to push to dashboard here, as the redirect will handle it
     } catch (error) {
@@ -77,7 +80,13 @@ export default function LoginPage() {
     setErrorMessage(null);
     setLoadingState({ isLoadingGithub: true });
     try {
-      await loginWithGithub();
+      const { url, error } = await loginWithGithub();
+      if (error) {
+        throw new Error(error);
+      }
+      if (url) {
+        window.location.href = url; // Redirect to the OAuth provider
+      }
     } catch (error) {
       console.error("GitHub login failed", error);
       setErrorMessage("GitHub login failed. Please try again.");
@@ -87,10 +96,11 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="flex w-full min-h-screen">
-      <div className="hidden md:flex md:flex-1 bg-zinc-900 text-white p-10">
-        <div className="flex flex-col justify-between h-full">
-          <div className="flex items-center text-lg font-medium">
+    <>
+      <div className="container relative min-h-screen flex flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+        <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
+          <div className="absolute inset-0 bg-zinc-900" />
+          <div className="relative z-20 flex items-center text-lg font-medium">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -105,95 +115,98 @@ export default function LoginPage() {
             </svg>
             Acme Inc
           </div>
-          <blockquote className="space-y-2">
-            <p className="text-lg">
-              &ldquo;This library has saved me countless hours of work and
-              helped me deliver stunning designs to my clients faster than ever
-              before.&rdquo;
-            </p>
-            <footer className="text-sm">Sofia Davis</footer>
-          </blockquote>
-        </div>
-      </div>
-      <div className="flex-1 flex items-center justify-center">
-        <div className="w-full max-w-[350px] space-y-6">
-          <div className="space-y-2 text-center">
-            <h1 className="text-3xl font-bold">Login</h1>
-            <p className="text-muted-foreground">
-              Enter your email below to login to your account
-            </p>
+          <div className="relative z-20 mt-auto">
+            <blockquote className="space-y-2">
+              <p className="text-lg">
+                &ldquo;This library has saved me countless hours of work and
+                helped me deliver stunning designs to my clients faster than
+                ever before.&rdquo;
+              </p>
+              <footer className="text-sm">Sofia Davis</footer>
+            </blockquote>
           </div>
-          {errorMessage && (
-            <div className="text-red-500 text-center">{errorMessage}</div>
-          )}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" type="email" required />
+        </div>
+
+        <div className="flex-1 flex items-center justify-center">
+          <div className="w-full max-w-[350px] space-y-6">
+            <div className="space-y-2 text-center">
+              <h1 className="text-3xl font-bold">Login</h1>
+              <p className="text-muted-foreground">
+                Enter your email below to login to your account
+              </p>
             </div>
-            <div className="space-y-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
-                <Link
-                  href="/auth/forgot-password"
-                  className="ml-auto text-sm underline"
-                >
-                  Forgot your password?
-                </Link>
+            {errorMessage && (
+              <div className="text-red-500 text-center">{errorMessage}</div>
+            )}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" name="email" type="email" required />
               </div>
-              <Input id="password" name="password" type="password" required />
+              <div className="space-y-2">
+                <div className="flex items-center">
+                  <Label htmlFor="password">Password</Label>
+                  <Link
+                    href="/auth/forgot-password"
+                    className="ml-auto text-sm underline"
+                  >
+                    Forgot your password?
+                  </Link>
+                </div>
+                <Input id="password" name="password" type="password" required />
+              </div>
+              <div className="flex gap-4">
+                <Button
+                  type="submit"
+                  className="flex-1"
+                  disabled={isAnyLoading()}
+                >
+                  {loadingStates.isLoadingEmail ? (
+                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                  ) : null}
+                  Log in
+                </Button>
+              </div>
+            </form>
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Or continue with
+                </span>
+              </div>
             </div>
-            <div className="flex gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <Button
-                type="submit"
-                className="flex-1"
+                variant="outline"
+                onClick={handleGoogleSignIn}
                 disabled={isAnyLoading()}
               >
-                {loadingStates.isLoadingEmail ? (
+                {loadingStates.isLoadingGoogle ? (
                   <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                ) : null}
-                Log in
+                ) : (
+                  <Icons.google className="mr-2 h-4 w-4" />
+                )}
+                Google
+              </Button>
+              <Button
+                variant="outline"
+                onClick={handleGithubSignIn}
+                disabled={isAnyLoading()}
+              >
+                {loadingStates.isLoadingGithub ? (
+                  <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <Icons.gitHub className="mr-2 h-4 w-4" />
+                )}
+                GitHub
               </Button>
             </div>
-          </form>
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
-                Or continue with
-              </span>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <Button
-              variant="outline"
-              onClick={handleGoogleSignIn}
-              disabled={isAnyLoading()}
-            >
-              {loadingStates.isLoadingGoogle ? (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <Icons.google className="mr-2 h-4 w-4" />
-              )}
-              Google
-            </Button>
-            <Button
-              variant="outline"
-              onClick={handleGithubSignIn}
-              disabled={isAnyLoading()}
-            >
-              {loadingStates.isLoadingGithub ? (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <Icons.gitHub className="mr-2 h-4 w-4" />
-              )}
-              GitHub
-            </Button>
           </div>
         </div>
       </div>
-    </main>
+    </>
   );
 }
