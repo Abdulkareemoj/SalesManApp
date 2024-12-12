@@ -9,7 +9,7 @@ import {
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { ProfileMenu } from "@/components/profile-menu";
+import ProfileMenu  from "@/components/profile-menu";
 import { Search } from "@/components/search";
 import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";

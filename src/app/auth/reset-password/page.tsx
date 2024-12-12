@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { changePassword } from "../actions";
 import { Button } from "@/components/ui/button";
@@ -11,28 +11,65 @@ import { Icons } from "@/components/icons";
 
 export default function ChangePasswordPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [refreshToken, setRefreshToken] = useState<string>();
+  useEffect(() => {
+    const accessToken = searchParams.get("access_token");
+    const refreshToken = searchParams.get("refresh_token");
+    if (accessToken) {
+      setAccessToken(accessToken);
+    } else {
+      setErrorMessage("Session token is missing. Please try again.");
+    }
+    if (refreshToken) {
+      setRefreshToken(refreshToken);
+    } else {
+      setErrorMessage("Refresh token is missing. Please try again.");
+    }
+  }, [searchParams]);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
+    setErrorMessage(null);
     const formData = new FormData(event.currentTarget);
     const newPassword = formData.get("newPassword") as string;
     const confirmPassword = formData.get("confirmPassword") as string;
 
     if (newPassword !== confirmPassword) {
-      console.error("Passwords do not match");
+      setErrorMessage("Passwords do not match");
+      setIsLoading(false);
+      return;
+    }
+
+    if (!accessToken) {
+      setErrorMessage("Session token is missing. Please try again.");
+      setIsLoading(false);
+      return;
+    }
+
+    if (!refreshToken) {
+      setErrorMessage("Refresh token is missing. Please try again.");
       setIsLoading(false);
       return;
     }
 
     try {
-      await changePassword(newPassword);
+      const { error } = await changePassword(
+        newPassword,
+        accessToken,
+        refreshToken
+      );
+      if (error) {
+        throw new Error(error);
+      }
       setIsSubmitted(true);
     } catch (error) {
       console.error("Password change failed", error);
-      // Handle error (e.g., show error message to user)
+      setErrorMessage("Password change failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -78,12 +115,18 @@ export default function ChangePasswordPage() {
               Enter your new password below
             </p>
           </div>
+          {errorMessage && (
+            <div className="text-red-500 text-center">{errorMessage}</div>
+          )}
           {isSubmitted ? (
             <div className="flex flex-col items-center space-y-4">
               <p className="text-center text-muted-foreground">
                 Password changed successfully!
               </p>
-              <Button onClick={() => router.push("/signin")} className="w-full">
+              <Button
+                onClick={() => router.push("/auth/signin")}
+                className="w-full"
+              >
                 Go to Sign In
               </Button>
             </div>
@@ -118,7 +161,7 @@ export default function ChangePasswordPage() {
           <p className="px-8 text-center text-sm text-muted-foreground">
             Remember your old password?{" "}
             <Link
-              href="/signin"
+              href="/auth/signin"
               className="underline underline-offset-4 hover:text-primary"
             >
               Sign in

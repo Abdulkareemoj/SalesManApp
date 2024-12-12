@@ -37,11 +37,8 @@ export default function LandingPage() {
           applications. Enjoy!
         </p>
         <div className="mt-10">
-          <Button
-            className="rounded-full px-8 py-3 text-sm font-medium"
-            onClick={() => router.push("/dashboard")}
-          >
-            Get Started
+          <Button className="rounded-full px-8 py-3 text-sm font-medium">
+            <Link href="/dashboard">Get Started</Link>
           </Button>
         </div>
       </main>
