@@ -1,7 +1,6 @@
 import { AreaGraph } from "@/components/charts/area-graph";
 import { BarGraph } from "@/components/charts/bar-graph";
 import { PieGraph } from "@/components/charts/pie-graph";
-import { Charts } from "../charts/charts";
 const Analytics = () => {
   return (
     <>

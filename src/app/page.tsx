@@ -3,10 +3,8 @@ import Link from "next/link";
 import { JSX, SVGProps } from "react";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 
 export default function LandingPage() {
-  const router = useRouter();
   return (
     <div className="flex min-h-[100dvh] flex-col bg-primary">
       <header className="flex items-center justify-between px-6 py-4">

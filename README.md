@@ -1,60 +1,36 @@
-# SalesManApp
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-### A Sales Management App to manage customers, sales, inventory and generate reports
+## Getting Started
 
-## Features
-
-- User Authentication
-- User Roles
-- Customer Management
-- Sales Management
-- Inventory Management
-- Reports
-- User Profile
-- User Settings
-- User Notifications
-- User Dashboard
-
-## Demo
-
-You can view a fully working demo [here](https://sales-man-app.vercel.app/).
-
-## Clone and run locally
-
-To clone and run this application locally, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with npm) installed on your computer. From your command line:
+First, run the development server:
 
 ```bash
-# Clone this repository
-$ git clone
-
-# Navigate into the directory
-$ cd SalesManApp
-
-# Install dependencies
-$ npm install
-
-# Run the app
-$ npm run dev
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-## Environment Variables
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-To run this project, you will need to add the following environment variables to your .env file
-There is an env.template file in the root directory that you can use as a template.
-But you will need to create a Supabase account and a new project to get the values for the environment variables.
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-## Tech Stack
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-This project uses the following technologies:
+## Learn More
 
-- [Next.js](https://nextjs.org/)
-- [Supabase](https://supabase.io/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [React Hook Form](https://react-hook-form.com/)
-- [Supabase Cache Helpers](https://)
-- [Prisma](https://prisma.io/)
-- [Shadcn UI](https://ui.shadcn.com/)
+To learn more about Next.js, take a look at the following resources:
 
-## Contributing
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-Any contributions you make are **greatly appreciated**.
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

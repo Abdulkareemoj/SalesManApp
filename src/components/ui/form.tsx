@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import * as LabelPrimitive from "@radix-ui/react-label"
 import { Slot } from "@radix-ui/react-slot"
@@ -133,7 +135,7 @@ const FormDescription = React.forwardRef<
     <p
       ref={ref}
       id={formDescriptionId}
-      className={cn("text-[0.8rem] text-slate-500 dark:text-slate-400", className)}
+      className={cn("text-[0.8rem] text-neutral-500 dark:text-neutral-400", className)}
       {...props}
     />
   )

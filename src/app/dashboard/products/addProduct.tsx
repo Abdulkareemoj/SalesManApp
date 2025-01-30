@@ -24,9 +24,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { toast, useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useInsertMutation } from "@supabase-cache-helpers/postgrest-swr";
 import { createClient } from "@/utils/supabase/client";
@@ -56,29 +56,40 @@ export default function AddProduct() {
       productname: "",
       description: "",
       stock: 0,
-      category: "electronics",
+      category: "food",
       price: 0,
       status: "pending",
       supplier: "",
     },
   });
-
-  const { trigger: insert } = useInsertMutation(client.from("Product"), ["id"]);
-
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
-    try {
-      console.log("Submitting data:", data); // Debugging log
-      await insert([data]);
-      toast({
-        title: "Product added successfully.",
-      });
-    } catch (error) {
-      console.error("Error adding product:", error); // Debugging log
-      toast({
-        title: "Failed to add product.",
-      });
+  const { trigger: addProduct } = useInsertMutation(
+    client.from("Product"),
+    ["id"],
+    "productName",
+    {
+      onSuccess: () => {
+        toast({
+          title: "Success",
+          description: "New product added successfully",
+        });
+        form.reset();
+      },
+      onError: (error) => {
+        toast({
+          title: "Error",
+          description: `Failed to add new product: ${error.message}`,
+          variant: "destructive",
+        });
+      },
     }
-  };
+  );
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      await addProduct([values]);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  }
 
   return (
     <main>
@@ -92,7 +103,7 @@ export default function AddProduct() {
               <DialogHeader>
                 <DialogTitle>Add a new Product</DialogTitle>
                 <DialogDescription>
-                  Enter details. Click save when you're done.
+                  Enter details. Click save when you&apos;re done.
                 </DialogDescription>
               </DialogHeader>
 

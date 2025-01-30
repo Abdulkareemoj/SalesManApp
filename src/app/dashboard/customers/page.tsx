@@ -1,12 +1,13 @@
 "use client";
+
 import { useQuery } from "@supabase-cache-helpers/postgrest-swr";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import { Button } from "@/components/ui/button";
-import { ToastAction } from "@/components/ui/toast";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { createClient } from "@/utils/supabase/client";
-import { Icons } from "@/components/ui/icons";
+import { DataTableSkeleton } from "@/components/data-table-skeleton";
+import * as React from "react";
 
 const client = createClient();
 
@@ -21,30 +22,43 @@ export default function CustomersPage() {
       revalidateOnReconnect: false,
     }
   );
-  console.log("Data:", data);
-  console.log("Error:", error);
 
-  if (error)
+  // Use useEffect to show toast when there's an error
+  React.useEffect(() => {
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: "Error fetching customers",
+        description: error.message,
+        action: (
+          <Button variant="outline" onClick={() => window.location.reload()}>
+            Try again
+          </Button>
+        ),
+      });
+    }
+  }, [error, toast]);
+
+  if (error) {
     return (
-      <Button
-        variant="outline"
-        onClick={() => {
-          toast({
-            title: "Uh oh! Something went wrong.",
-            description: <div>Error: {error.message}</div>,
-            action: <ToastAction altText="Try again">Try again</ToastAction>,
-          });
-        }}
-      >
-        Show Toast
-      </Button>
-    );
-  if (!data)
-    return (
-      <div className="flex justify-center items-center h-screen">
-        Loading <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-red-500">
+          Failed to load customers. Please try again.
+        </p>
       </div>
     );
+  }
+
+  if (!data) {
+    return (
+      <div className="m-6">
+        <div className="container mx-auto py-3">
+          <DataTableSkeleton />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="m-6">
       <div className="container mx-auto py-3">
