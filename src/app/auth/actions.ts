@@ -43,7 +43,7 @@ export async function loginWithGoogle() {
     return { url: data.url };
   }
 
-  return { error: null };
+  return { error: "No URL returned from Supabase" };
 }
 
 export async function loginWithGithub() {
@@ -65,7 +65,7 @@ export async function loginWithGithub() {
     return { url: data.url };
   }
 
-  return { error: null };
+  return { error: "No URL returned from Supabase" };
 }
 
 export async function signup(formData: FormData) {
