@@ -1,7 +1,18 @@
 import Footer from "@/components/footer";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "@/components/ui/toaster";
-const Layout = ({ children }: { children: React.ReactNode }) => {
+
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Welcome.",
+};
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <>
       <main className="">
@@ -11,6 +22,4 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       </main>
     </>
   );
-};
-
-export default Layout;
+}

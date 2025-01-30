@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { changePassword } from "../actions";
 import { Button } from "@/components/ui/button";
@@ -11,26 +11,24 @@ import { Icons } from "@/components/icons";
 
 export default function ChangePasswordPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [refreshToken, setRefreshToken] = useState<string>();
+  const [refreshToken, setRefreshToken] = useState<string | null>(null);
+
   useEffect(() => {
-    const accessToken = searchParams.get("access_token");
-    const refreshToken = searchParams.get("refresh_token");
-    if (accessToken) {
-      setAccessToken(accessToken);
+    const storedAccessToken = localStorage.getItem("accessToken");
+    const storedRefreshToken = localStorage.getItem("refreshToken");
+
+    if (storedAccessToken && storedRefreshToken) {
+      setAccessToken(storedAccessToken);
+      setRefreshToken(storedRefreshToken);
     } else {
-      setErrorMessage("Session token is missing. Please try again.");
+      setErrorMessage("Authentication tokens are missing. Please try again.");
     }
-    if (refreshToken) {
-      setRefreshToken(refreshToken);
-    } else {
-      setErrorMessage("Refresh token is missing. Please try again.");
-    }
-  }, [searchParams]);
+  }, []);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
@@ -45,14 +43,8 @@ export default function ChangePasswordPage() {
       return;
     }
 
-    if (!accessToken) {
-      setErrorMessage("Session token is missing. Please try again.");
-      setIsLoading(false);
-      return;
-    }
-
-    if (!refreshToken) {
-      setErrorMessage("Refresh token is missing. Please try again.");
+    if (!accessToken || !refreshToken) {
+      setErrorMessage("Authentication tokens are missing. Please try again.");
       setIsLoading(false);
       return;
     }

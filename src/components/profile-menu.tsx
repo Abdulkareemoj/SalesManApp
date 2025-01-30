@@ -1,10 +1,11 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
-
 "use client";
+
 import { useEffect, useState } from "react";
 import { createClient } from "../utils/supabase/client";
-import { type User } from "@supabase/supabase-js";
-
+import type { User } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,14 +17,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 export default function ProfileMenu() {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<any>(null);
-  const client = createClient();
   const router = useRouter();
+  const client = createClient();
 
   useEffect(() => {
     const fetchUserAndProfile = async () => {
@@ -73,7 +72,7 @@ export default function ProfileMenu() {
     return () => {
       authListener.subscription.unsubscribe();
     };
-  }, []);
+  }, [client]); // Added client to the dependency array
 
   if (!user || !profile) {
     return null;
@@ -107,7 +106,7 @@ export default function ProfileMenu() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <Link href="/dashboard/settings">Profile</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>Billing</DropdownMenuItem>

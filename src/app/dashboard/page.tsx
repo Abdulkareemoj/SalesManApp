@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+"use client";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CalendarDateRangePicker } from "@/components/date-range-picker";
@@ -7,11 +7,6 @@ import Analytics from "@/components/dashboard/analytics";
 import Overview from "@/components/dashboard/overview";
 import Tasks from "@/components/dashboard/tasks/tasks";
 import Notifications from "@/components/dashboard/notifications";
-
-export const metadata: Metadata = {
-  title: "Dashboard",
-  description: "Welcome.",
-};
 
 export default function DashboardPage() {
   return (
