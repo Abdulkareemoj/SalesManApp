@@ -35,7 +35,7 @@ export async function loginWithGoogle() {
   });
 
   if (error) {
-    console.error("Google login failed", error);
+    console.error("Error during Google sign-in:", error);
     return { error: error.message };
   }
 
@@ -45,7 +45,6 @@ export async function loginWithGoogle() {
 
   return { error: "No URL returned from Supabase" };
 }
-
 export async function loginWithGithub() {
   const supabase = createClient();
 
