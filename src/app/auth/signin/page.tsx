@@ -55,7 +55,6 @@ export default function LoginPage() {
       setLoadingState({ isLoadingEmail: false });
     }
   };
-
   const handleGoogleSignIn = async () => {
     setErrorMessage(null);
     setLoadingState({ isLoadingGoogle: true });
@@ -67,7 +66,6 @@ export default function LoginPage() {
       if (url) {
         window.location.href = url; // Redirect to the OAuth provider
       }
-      // No need to push to dashboard here, as the redirect will handle it
     } catch (error) {
       console.error("Google login failed", error);
       setErrorMessage("Google login failed. Please try again.");
