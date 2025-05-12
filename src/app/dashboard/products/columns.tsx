@@ -1,20 +1,12 @@
 "use client";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
-import { ColumnDef } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Checkbox } from "@/components/ui/checkbox";
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
 
+import { ArrowUpDown } from "lucide-react";
+import type { ColumnDef } from "@tanstack/react-table";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { ProductActions } from "./product-actions";
+
+// This type is used to define the shape of our data.
 export type Product = {
   id: string;
   productName: string;
@@ -26,6 +18,7 @@ export type Product = {
   status: "pending" | "processing" | "success" | "failed";
   supplier: string;
 };
+
 export const columns: ColumnDef<Product>[] = [
   {
     id: "select",
@@ -67,7 +60,6 @@ export const columns: ColumnDef<Product>[] = [
     accessorKey: "description",
     header: "Description",
   },
-
   {
     accessorKey: "createdAt",
     header: "Created At",
@@ -100,12 +92,11 @@ export const columns: ColumnDef<Product>[] = [
       );
     },
   },
-
   {
     accessorKey: "price",
     header: () => <div className="text-right">Price</div>,
     cell: ({ row }) => {
-      const price = parseFloat(row.getValue("price"));
+      const price = Number.parseFloat(row.getValue("price"));
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
@@ -125,35 +116,7 @@ export const columns: ColumnDef<Product>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const router = useRouter();
-
-      const product = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(product.id)}
-            >
-              Copy payment ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => router.push(`/dashboard/prodcuts/${product.id}`)}
-            >
-              View Product
-            </DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
+      return <ProductActions product={row.original} />;
     },
   },
 ];

@@ -1,20 +1,12 @@
 "use client";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+
+import { ArrowUpDown } from "lucide-react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
+import { CustomerActions } from "./customer-actions";
 
+// This type is used to define the shape of our data.
 export type Customer = {
   id: string;
   name: string;
@@ -107,50 +99,24 @@ export const columns: ColumnDef<Customer>[] = [
     accessorKey: "subscriptionTier",
     header: "Tier",
   },
-  // {
-  //   accessorKey: "amount",
-  //   header: () => <div className="text-right">Amount</div>,
-  //   cell: ({ row }) => {
-  //     const amount = parseFloat(row.getValue("amount"));
-  //     const formatted = new Intl.NumberFormat("en-US", {
-  //       style: "currency",
-  //       currency: "USD",
-  //     }).format(amount);
-
-  //     return <div className="text-right font-medium">{formatted}</div>;
-  //   },
-  // },
   {
     id: "actions",
     cell: ({ row }) => {
-      const router = useRouter();
-      const customer = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(customer.id)}
-            >
-              Copy payment ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => router.push(`/dashboard/customers/${customer.id}`)}
-            >
-              View customer
-            </DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
+      return <CustomerActions customer={row.original} />;
     },
   },
 ];
+
+// {
+//   accessorKey: "amount",
+//   header: () => <div className="text-right">Amount</div>,
+//   cell: ({ row }) => {
+//     const amount = parseFloat(row.getValue("amount"));
+//     const formatted = new Intl.NumberFormat("en-US", {
+//       style: "currency",
+//       currency: "USD",
+//     }).format(amount);
+
+//     return <div className="text-right font-medium">{formatted}</div>;
+//   },
+// },
