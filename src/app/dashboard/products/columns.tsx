@@ -14,7 +14,6 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-const router = useRouter();
 
 export type Product = {
   id: string;
@@ -126,6 +125,8 @@ export const columns: ColumnDef<Product>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
+      const router = useRouter();
+
       const product = row.original;
 
       return (
